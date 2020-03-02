@@ -1,3 +1,26 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+#    methods:    GET|HEAD
+
+index:
+  path:       /
+  controller: App\Controller\IndexController::index
+  methods:    GET|HEAD
+
+app_login:
+  path:       /login
+  controller: App\Controller\SecurityController::login
+  methods: GET|POST
+
+app_logout:
+  path:       /logout
+  controller: App\Controller\SecurityController::logout
+
+app_admin:
+    path: /admin
+    controller: App\Admin\Controller\AdminController::index
+
+app_products:
+  path: /admin/products
+  controller: App\Controller\ProductController::index
