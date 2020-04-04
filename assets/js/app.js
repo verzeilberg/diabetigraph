@@ -9,43 +9,30 @@ require('@fortawesome/fontawesome-free/js/all.js');
 require('../css/app.css');
 
 
+
+
 const $ = require('jquery');
+
+// create global $ and jQuery variables
+global.$ = global.jQuery = $;
+
 // this "modifies" the jquery module: adding behavior to it
 // the bootstrap module doesn't export/return anything
 require('bootstrap');
 
 
-function setMainContentHeight() {
-    var windowHeight = window.innerHeight;
-    var headerHeight = $("#header").height()
-    var footerHeight = $("footer.footer").height();
-
-    console.log('headerHeight: ', headerHeight);
-    console.log('footerHeight: ', footerHeight);
-
-    windowHeight = windowHeight - footerHeight - headerHeight - 30;
-
-    console.log('windowHeight: ', windowHeight)
-
-    $('#mainContent').height(windowHeight);
-}
-
-
 $(document).ready(function () {
-    $('[data-toggle="popover"]').popover();
 
 
-    setMainContentHeight();
 
+    $('.deleteItem').click(function () {
+        let deleteType = $(this).data('type')
+        let deleteLink = $(this).data('link');
+        let deleteDescription = $(this).data('description');
+        $('#deleteLink').attr('href', deleteLink);
+        $('#deleteType').html(deleteType);
+        $('#deleteDescription').html(deleteDescription);
+        $('#deleteModal').modal('toggle');
+    });
 
-});
-
-$(window).change(function () {
-    console.log('change window');
-    setMainContentHeight();
-});
-
-$(window).resize(function () {
-    console.log('resize window');
-    setMainContentHeight();
 });

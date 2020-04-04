@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Rollerworks\Component\PasswordStrength\Validator\Constraints as RollerworksPassword;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -51,8 +53,15 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @RollerworksPassword\PasswordStrength(minLength=7, minStrength=3)
+     * @RollerworksPassword\PasswordRequirements(requireLetters=true, requireNumbers=true, requireCaseDiff=true, requireSpecialCharacter=true)
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=false, )
+     */
+    private $archived = false;
 
     /**
      * Many Users have Many Roles.
@@ -226,6 +235,24 @@ class User implements UserInterface
     public function setEmail($email)
     {
         $this->email = $email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getArchived()
+    {
+        return $this->archived;
+    }
+
+    /**
+     * @param mixed $archived
+     * @return User
+     */
+    public function setArchived($archived)
+    {
+        $this->archived = $archived;
+        return $this;
     }
 
 

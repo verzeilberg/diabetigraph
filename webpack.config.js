@@ -8,6 +8,8 @@ Encore
     // only needed for CDN's or sub-directory deploy
     //.setManifestKeyPrefix('build/')
 
+
+
     /*
      * ENTRY CONFIG
      *
@@ -18,6 +20,7 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
+    .addEntry('unit', './assets/js/unit.js')
     //.addEntry('page2', './assets/js/page2.js')
 
     // will require an extra script tag for runtime.js
@@ -36,7 +39,7 @@ Encore
 .enableSassLoader()
 
 // uncomment if you're having problems with a jQuery plugin
-//.autoProvidejQuery()
+.autoProvidejQuery()
 ;
 
 module.exports = Encore.getWebpackConfig();

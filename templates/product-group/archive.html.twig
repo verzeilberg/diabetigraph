@@ -1,0 +1,68 @@
+{% extends '/layout.html.twig' %}
+{% block content %}
+    <div class="row">
+        <h1 class="col">{% trans %}Archived product groups{% endtrans %}</h1>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <a
+                    class="btn btn-sm btn-secondary"
+                    href="{{ path('app_productgroups') }}"
+                    title="{% trans %}Product groups{% endtrans %}"
+            >
+                &nbsp;<i class="fas fa-layer-group"></i> {% trans %}Product groups{% endtrans %}
+            </a>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col">
+            <table class="table table-bordered table-primary table table-striped table-sm">
+                <thead class="thead-primary">
+                <tr>
+                    <th>{% trans %}Name{% endtrans %}</th>
+                    <th class="text-center"><i class="fas fa-cogs"></i></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ product.name|e }}</td>
+                        <td class="col-md-auto text-center">
+                            <a
+                                    class="btn btn-sm btn-warning"
+                                    href="{{ path('app_unarchiveproductgroup', {id: item.id}) }}"
+                                    title="{% trans %}Unarchive product group{% endtrans %}"
+                            >
+                                <i class="fas fa-box-open"></i>
+                            </a>
+                            <button
+                                    data-type="{% trans %}product group{% endtrans %}"
+                                    data-link="{{ path('app_deleteproductgroup', {id: item.id}) }}"
+                                    data-description="{{ item.name|e }}"
+                                    type="button"
+                                    class="btn btn-sm btn-danger deleteProductGroup"
+                                    data-toggle="modal"
+                                    data-target="#deleteModal"
+                            >
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="2" class="text-center">{% trans %}No product group(s) found.{% endtrans %}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {{ knp_pagination_render(items) }}
+        </div>
+    </div>
+
+
+    {% include 'partial/delete.modal.html.twig' %}
+{% endblock %}

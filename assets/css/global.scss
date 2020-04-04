@@ -1,7 +1,15 @@
 // assets/css/global.scss
 
 // customize some Bootstrap variables
-$primary: darken(#428bca, 20%);
+//$primary: darken(#428bca, 20%);
+
+$theme-colors: (
+        "custom": #7eb0db
+       // "primary": #7eb0db,
+        //"danger": #ff4136
+);
+
+
 
 // the ~ allows you to reference things in node_modules
 @import "~bootstrap/scss/bootstrap";

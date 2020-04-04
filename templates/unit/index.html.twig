@@ -1,0 +1,89 @@
+{% extends '/layout.html.twig' %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('unit') }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <h1 class="col">{% trans %}Units{% endtrans %}</h1>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <a
+                    class="btn btn-sm btn-custom"
+                    href="{{ path('app_archivedunits') }}"
+                    title="{% trans %}Archived units{% endtrans %}"
+            >
+                &nbsp;<i class="fas fa-layer-group"></i> {% trans %}Archived units{% endtrans %}
+            </a>
+        </div>
+        <div class="col text-right">
+            <a
+                    class="btn btn-sm btn-custom"
+                    href="{{ path('app_addunit') }}"
+                    title="{% trans %}Add unit{% endtrans %}"
+            >
+                <i class="fas fa-plus-square"></i>&nbsp;{% trans %}Add unit{% endtrans %}
+            </a>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col">
+            <ul class="sortable-title">
+                <li class=" border border-primary bg-secondary mb-1">
+                        <span class="row">
+                        <span class="col-md-2">#</span>
+                        <span class="col-md-6">{% trans %}Name{% endtrans %}</span>
+                        <span class="col-md-4 text-center"><i class="fas fa-cogs"></i></span>
+                        </span>
+            </ul>
+            <ul id="sortable">
+                {% for item in items %}
+                    <li data-id="{{ item.id|e }}" class=" border border-primary bg-custom mb-1">
+                        <span class="row">
+                            <span class="order col-md-2">{{ item.order|e }}</span>
+                            <span class="col-md-6">{{ item.name|e }}</span>
+                            <span class="col-md-4 text-center">
+                                <a
+                                        class="btn btn-sm btn-secondary"
+                                        href="{{ path('app_editunit', {id: item.id}) }}"
+                                        title="{% trans %}Edit units{% endtrans %}"
+                                >
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a
+                                            class="btn btn-sm btn-warning"
+                                            href="{{ path('app_archiveunit', {id: item.id}) }}"
+                                            title="{% trans %}Archive unit{% endtrans %}"
+                                    >
+                                        <i class="fas fa-box"></i>
+                                    </a>
+                                    <button
+                                            data-type="{% trans %}unit{% endtrans %}"
+                                            data-link="{{ path('app_deleteunit', {id: item.id}) }}"
+                                            data-description="{{ item.name|e }}"
+                                            type="button"
+                                            class="btn btn-sm btn-danger deleteItem"
+                                            data-toggle="modal"
+                                            data-target="#deleteModal"
+                                    >
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                            </span>
+                        </span>
+                    </li>
+
+                {% else %}
+                    <li class="list-group-item list-group-item-custom col text-center">
+                        <span>{% trans %}No units(s) found.{% endtrans %}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+            {{ knp_pagination_render(items) }}
+        </div>
+    </div>
+    {% include 'partial/delete.modal.html.twig' %}
+{% endblock %}

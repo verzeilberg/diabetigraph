@@ -38,6 +38,11 @@ class Role
      */
     private $users;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=false, )
+     */
+    private $archived = false;
+
     public function __construct() {
         $this->users = new ArrayCollection();
     }
@@ -120,6 +125,24 @@ class Role
     public function setRoleId($roleId)
     {
         $this->roleId = $roleId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getArchived()
+    {
+        return $this->archived;
+    }
+
+    /**
+     * @param mixed $archived
+     * @return Role
+     */
+    public function setArchived($archived)
+    {
+        $this->archived = $archived;
+        return $this;
     }
 
 

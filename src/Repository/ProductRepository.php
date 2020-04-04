@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Product\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @method Product|null find($id, $lockMode = null, $lockVersion = null)
@@ -28,52 +29,69 @@ class ProductRepository extends ServiceEntityRepository
      */
     public function save($product)
     {
-        $result = [];
+        $result['error'] = [];
         try {
             $this->getEntityManager()->persist($product);
             $this->getEntityManager()->flush();
-            $result['error'][] = null;
+            $result['error'] = null;
         } catch (Exception $e) {
             $result['error'][$e->getMessage()];
         }
         return $result;
     }
 
+
     /**
-     * Get deleted or non deleted products
-     * @param bool $deleted
+     * Delete product from database
+     * @param $product
+     * @return array
      */
-    public function getProducts($deleted = false)
+    public function delete($product)
     {
-        return $this->findBy(['deleted' => $deleted]);
+        $result = [];
+        try {
+            $this->getEntityManager()->remove($product);
+            $this->getEntityManager()->flush();
+            $result['error'] = null;
+        } catch (Exception $e) {
+            $result['error'][] = $e->getMessage();
+        }
+        return $result;
     }
 
-    // /**
-    //  * @return Product[] Returns an array of Product objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * Get archived or non archived products
+     * @param bool $deleted
+     * @return \Doctrine\ORM\Query
+     */
+    public function getProducts($archived = false)
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+            ->where('p.archived = :archived')
+            ->setParameter('archived', $archived)
+            ->orderBy('p.name', 'ASC')
+            ->getQuery();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Product
+    /**
+     * Get product by id
+     * @param $id
+     * @return Product|null
+     */
+    public function getProduct($id)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $this->findOneBy(['id' => $id]);
     }
-    */
+
+    public function searchProducts($search)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $orX = $qb->expr()->orX();
+        $orX->add($qb->expr()->like('a.name', "'%$search%'"));
+        $orX->add($qb->expr()->like('a.workoutType', "'%$search%'"));
+
+        $qb->where($orX);
+        return $qb->getQuery();
+    }
+
 }

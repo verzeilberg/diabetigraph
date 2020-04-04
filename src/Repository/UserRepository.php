@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -22,6 +23,83 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         parent::__construct($registry, User::class);
     }
 
+
+    /**
+     * Save user to database
+     * @param $user
+     * @return array
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function save($user)
+    {
+        $result['error'] = [];
+        try {
+            $this->getEntityManager()->persist($user);
+            $this->getEntityManager()->flush();
+            $result['error'] = null;
+        } catch (Exception $e) {
+            $result['error'][$e->getMessage()];
+        }
+        return $result;
+    }
+
+
+    /**
+     * Delete user from database
+     * @param $user
+     * @return array
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function delete($user)
+    {
+        $result = [];
+        try {
+            $this->getEntityManager()->remove($user);
+            $this->getEntityManager()->flush();
+            $result['error'] = null;
+        } catch (Exception $e) {
+            $result['error'][] = $e->getMessage();
+        }
+        return $result;
+    }
+
+    /**
+     * Get archived or non archived users
+     * @param bool $deleted
+     * @return Query
+     */
+    public function getUsers($archived = false)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.archived = :archived')
+            ->setParameter('archived', $archived)
+            ->orderBy('u.userName', 'ASC')
+            ->getQuery();
+    }
+
+    /**
+     * Get user by id
+     * @param $id
+     * @return User|null
+     */
+    public function getUser($id)
+    {
+        return $this->findOneBy(['id' => $id]);
+    }
+
+    public function searchUsers($search)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $orX = $qb->expr()->orX();
+        $orX->add($qb->expr()->like('a.name', "'%$search%'"));
+        $orX->add($qb->expr()->like('a.workoutType', "'%$search%'"));
+
+        $qb->where($orX);
+        return $qb->getQuery();
+    }
+
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
@@ -35,33 +113,4 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->persist($user);
         $this->_em->flush();
     }
-
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?User
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

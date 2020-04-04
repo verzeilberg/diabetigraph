@@ -28,6 +28,11 @@ class ProductGroup
     private $description;
 
     /**
+     * @ORM\Column(type="boolean", nullable=false, )
+     */
+    private $archived = false;
+
+    /**
      * One product group has many products. This is the inverse side.
      * @ORM\OneToMany(targetEntity="Product", mappedBy="productGroup")
      */
@@ -83,4 +88,24 @@ class ProductGroup
         $this->products = $products;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getArchived()
+    {
+        return $this->archived;
+    }
+
+    /**
+     * @param mixed $archived
+     * @return ProductGroup
+     */
+    public function setArchived($archived)
+    {
+        $this->archived = $archived;
+        return $this;
+    }
+
+
 }

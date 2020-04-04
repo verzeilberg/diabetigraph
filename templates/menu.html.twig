@@ -1,0 +1,25 @@
+<div class="row">
+    <h1 class="col">{% trans %}Menu{% endtrans %}</h1>
+</div>
+<div class="row mb-3">
+    <div class="col">
+        <nav class="nav flex-column" id="mainMenu">
+            <a href="{{ path('app_users') }}" class="nav-link text-black-50" title="{% trans %}User admin{% endtrans %}">
+                <i class="fas fa-users"></i> {% trans %}User{% endtrans %}
+            </a>
+            <a href="{{ path('app_roles') }}" class="nav-link text-black-50" title="{% trans %}Roles admin{% endtrans %}">
+                <i class="fas fa-user-tag"></i> {% trans %}Roles{% endtrans %}
+            </a>
+            <a href="{{ path('app_productgroups') }}" class="nav-link text-black-50" title="{% trans %}Product groups{% endtrans %}">
+                <i class="fas fa-utensils"></i> {% trans %}Product groups{% endtrans %}
+            </a>
+            <a href="{{ path('app_products') }}" class="nav-link text-black-50" title="{% trans %}Products{% endtrans %}">
+                <i class="fas fa-carrot"></i> {% trans %}Products{% endtrans %}
+            </a>
+            <a href="{{ path('app_units') }}" class="nav-link text-black-50" title="{% trans %}Units{% endtrans %}">
+                <i class="fas fa-weight-hanging"></i> {% trans %}Units{% endtrans %}
+            </a>
+
+        </nav>
+    </div>
+</div>

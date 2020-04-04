@@ -2,9 +2,12 @@
 
 namespace App\Repository;
 
-use App\Entity\ProductGroup;
+use App\Entity\Product\ProductGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Query;
 
 /**
  * @method ProductGroup|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,32 +22,85 @@ class ProductGroupRepository extends ServiceEntityRepository
         parent::__construct($registry, ProductGroup::class);
     }
 
-    // /**
-    //  * @return ProductGroup[] Returns an array of ProductGroup objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * Save product group to database
+     * @param $productGroup
+     * @return array
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function save($productGroup)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $result = [];
+        try {
+            $this->getEntityManager()->persist($productGroup);
+            $this->getEntityManager()->flush();
+            $result['error'] = null;
+        } catch (Exception $e) {
+            $result['error'][$e->getMessage()];
+        }
+        return $result;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?ProductGroup
+
+    /**
+     * Delete product group from database
+     * @param $productGroup
+     * @return array
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function delete($productGroup)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $result = [];
+        try {
+            $this->getEntityManager()->remove($productGroup);
+            $this->getEntityManager()->flush();
+            $result['error'] = null;
+        } catch (Exception $e) {
+            $result['error'][] = $e->getMessage();
+        }
+        return $result;
     }
-    */
+
+    /**
+     * Get archived or non archived product groups
+     * @param bool $archived
+     * @return Query
+     */
+    public function getProductGroups($archived = false)
+    {
+        return $this->createQueryBuilder('pg')
+            ->where('pg.archived = :archived')
+            ->setParameter('archived', $archived)
+            ->orderBy('pg.name', 'ASC')
+            ->getQuery();
+    }
+
+    /**
+     * Get product group by id
+     * @param $id
+     * @return ProductGroup|null
+     */
+    public function getProductGroup($id)
+    {
+        return $this->findOneBy(['id' => $id]);
+    }
+
+
+    /**
+     * Search for product group(s)
+     * @param $search
+     * @return Query
+     */
+    public function searchProductGroups($search)
+    {
+        $qb = $this->createQueryBuilder('pg');
+        $orX = $qb->expr()->orX();
+        $orX->add($qb->expr()->like('pg.name', "'%$search%'"));
+        $orX->add($qb->expr()->like('pg.workoutType', "'%$search%'"));
+
+        $qb->where($orX);
+        return $qb->getQuery();
+    }
 }

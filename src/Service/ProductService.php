@@ -17,7 +17,7 @@ class ProductService
     /**
      * @var ProductRepository
      */
-    private $productRepository;
+    public $productRepository;
 
     /**
      * ProductService constructor.
@@ -37,5 +37,17 @@ class ProductService
     public function newProduct()
     {
         return new Product();
+    }
+
+    /**
+     * Archive product
+     * @param Product $product
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function archiveProduct(Product $product, $archive = true)
+    {
+        $product->setArchived($archive);
+        return $this->productRepository->save($product);
     }
 }

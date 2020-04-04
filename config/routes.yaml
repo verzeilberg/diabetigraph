@@ -18,9 +18,159 @@ app_logout:
   controller: App\Controller\SecurityController::logout
 
 app_admin:
-    path: /admin
-    controller: App\Admin\Controller\AdminController::index
+  path: /admin
+  controller: App\Admin\Controller\AdminController::index
+
+# User routes
+
+app_users:
+  path: /admin/users
+  controller: App\Controller\User\UserController::index
+
+app_archivedusers:
+  path: /admin/archived-users
+  controller: App\Controller\User\UserController::archived
+
+app_adduser:
+  path: /admin/user/add
+  controller: App\Controller\User\UserController::add
+
+app_edituser:
+  path: /admin/user/edit/{id}
+  controller: App\Controller\User\UserController::edit
+
+app_archiveuser:
+  path: /admin/user/archive/{id}
+  controller: App\Controller\User\UserController::archive
+
+app_unarchiveuser:
+  path: /admin/user/unarchive{id}
+  controller: App\Controller\User\UserController::unarchive
+
+app_deleteuser:
+  path: /admin/user/delete/{id}
+  controller: App\Controller\User\UserController::delete
+
+# Roles routes
+
+app_roles:
+  path: /admin/roles
+  controller: App\Controller\Role\RoleController::index
+
+app_archivedroles:
+  path: /admin/archived-roles
+  controller: App\Controller\Role\RoleController::archived
+
+app_addrole:
+  path: /admin/role/add
+  controller: App\Controller\Role\RoleController::add
+
+app_editrole:
+  path: /admin/role/edit/{id}
+  controller: App\Controller\Role\RoleController::edit
+
+app_archiverole:
+  path: /admin/role/archive/{id}
+  controller: App\Controller\Role\RoleController::archive
+
+app_unarchiverole:
+  path: /admin/role/unarchive{id}
+  controller: App\Controller\Role\RoleController::unarchive
+
+app_deleterole:
+  path: /admin/role/delete/{id}
+  controller: App\Controller\Role\RoleController::delete
+
+# Product routes
 
 app_products:
   path: /admin/products
   controller: App\Controller\ProductController::index
+
+app_archivedproducts:
+  path: /admin/archived-products
+  controller: App\Controller\ProductController::archived
+
+app_addproduct:
+  path: /admin/product/add
+  controller: App\Controller\ProductController::add
+
+app_editproduct:
+  path: /admin/product/edit/{id}
+  controller: App\Controller\ProductController::edit
+
+app_archiveproduct:
+  path: /admin/product/archive/{id}
+  controller: App\Controller\ProductController::archive
+
+app_unarchiveproduct:
+  path: /admin/product/unarchive{id}
+  controller: App\Controller\ProductController::unarchive
+
+app_deleteproduct:
+  path: /admin/product/delete/{id}
+  controller: App\Controller\ProductController::delete
+
+# Product group routes
+
+app_productgroups:
+  path: /admin/product-groups
+  controller: App\Controller\ProductGroupController::index
+
+app_archivedproductgroups:
+  path: /admin/archived-product-groups
+  controller: App\Controller\ProductGroupController::archived
+
+app_addproductgroup:
+  path: /admin/product-group/add
+  controller: App\Controller\ProductGroupController::add
+
+app_editproductgroup:
+  path: /admin/product-group/edit/{id}
+  controller: App\Controller\ProductGroupController::edit
+
+app_archiveproductgroup:
+  path: /admin/product-group/archive/{id}
+  controller: App\Controller\ProductGroupController::archive
+
+app_unarchiveproductgroup:
+  path: /admin/product-group/unarchive{id}
+  controller: App\Controller\ProductGroupController::unarchive
+
+app_deleteproductgroup:
+  path: /admin/productgroup/delete/{id}
+  controller: App\Controller\ProductGroupController::delete
+
+# Unit routes
+
+app_units:
+  path: /admin/units
+  controller: App\Controller\UnitController::index
+
+app_archivedunits:
+  path: /admin/archived-units
+  controller: App\Controller\UnitController::archived
+
+app_addunit:
+  path: /admin/unit/add
+  controller: App\Controller\UnitController::add
+
+app_editunit:
+  path: /admin/unit/edit/{id}
+  controller: App\Controller\UnitController::edit
+
+app_archiveunit:
+  path: /admin/unit/archive/{id}
+  controller: App\Controller\UnitController::archive
+
+app_unarchiveunit:
+  path: /admin/unit/unarchive{id}
+  controller: App\Controller\UnitController::unarchive
+
+app_deleteunit:
+  path: /admin/unit/delete/{id}
+  controller: App\Controller\UnitController::delete
+
+app_orederunit:
+  path: /admin/unit/order
+  controller: App\Controller\UnitController::order
