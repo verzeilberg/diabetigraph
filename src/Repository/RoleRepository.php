@@ -97,18 +97,4 @@ class RoleRepository extends ServiceEntityRepository
         $qb->where($orX);
         return $qb->getQuery();
     }
-
-    /**
-     * Used to upgrade (rehash) the role's password automatically over time.
-     */
-    public function upgradePassword(RoleInterface $role, string $newEncodedPassword): void
-    {
-        if (!$role instanceof Role) {
-            throw new UnsupportedRoleException(sprintf('Instances of "%s" are not supported.', \get_class($role)));
-        }
-
-        $role->setPassword($newEncodedPassword);
-        $this->_em->persist($role);
-        $this->_em->flush();
-    }
 }

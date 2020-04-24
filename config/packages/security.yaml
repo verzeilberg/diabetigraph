@@ -14,8 +14,10 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            #access_denied_handler: App\Security\AccessDeniedHandler
             remember_me:
                 secret:   '%kernel.secret%'
+                remember_me_parameter: login[remember_me]
                 lifetime: 604800 # 1 week in seconds
                 path:     /
                 # by default, the feature is enabled by checking a
@@ -34,8 +36,10 @@ security:
             logout:
                 path: app_logout
                 # where to redirect after logout
-                target: index
+                target: app_index
             #provider: users_in_memory
+            pattern: ^/
+            user_checker: App\Security\UserChecker
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

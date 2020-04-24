@@ -1,0 +1,68 @@
+{% extends '/layout.html.twig' %}
+{% block content %}
+    <div class="row">
+        <h1 class="col">{% trans %}Archived users{% endtrans %}</h1>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <a
+                    class="btn btn-sm btn-custom"
+                    href="{{ path('app_users') }}"
+                    title="{% trans %}Users{% endtrans %}"
+            >
+                &nbsp;<i class="fas fa-hamburger"></i> {% trans %}Users{% endtrans %}
+            </a>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col">
+            <table class="table table-bordered table-primary table table-striped table-sm">
+                <thead class="thead-primary">
+                <tr>
+                    <th>{% trans %}Username{% endtrans %}</th>
+                    <th class="text-center"><i class="fas fa-cogs"></i></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.userName|e }}</td>
+                        <td class="col-md-auto text-center">
+                            <a
+                                    class="btn btn-sm btn-warning"
+                                    href="{{ path('app_unarchiveuser', {id: item.id}) }}"
+                                    title="{% trans %}Unarchive user{% endtrans %}"
+                            >
+                                <i class="fas fa-box-open"></i>
+                            </a>
+                            <button
+                                    data-type="{% trans %}user{% endtrans %}"
+                                    data-link="{{ path('app_deleteuser', {id: item.id}) }}"
+                                    data-description="{{ item.userName|e }}"
+                                    type="button"
+                                    class="btn btn-sm btn-danger deleteItem"
+                                    data-toggle="modal"
+                                    data-target="#deleteModal"
+                            >
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="2" class="text-center">{% trans %}No users found.{% endtrans %}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {{ knp_pagination_render(items) }}
+        </div>
+    </div>
+
+
+    {% include 'partial/delete.modal.html.twig' %}
+{% endblock %}

@@ -1,12 +1,137 @@
-Symfony is great: Symfony is de beste
 #Login form
 Sign in: Log in
 Username: Gebruikersnaam
 Password: Wachtwoord
 Remember me: Onthoudt mij
+Welcome user: Welkom gebruiker
+
+
+
+#Admin
 Admin: Beheer
 User admin: Gebruikers beheer
 Roles admin: Rollen beheer
 Product group: Product groep
 Product: Product
 
+Succesfully added: Succesvol toegevoegd
+Product not added: Product niet toegevoegd
+Succesfully edited: Succesvol gewijzigd
+Product not edited: PRoduct niet gewijzigd
+Succesfully archived: Succesvol gearchiveerd
+Product not found: Product niet gevonden
+Product not archived: Product niet gearchiveerd
+Succesfully unarchived: Succesvol uit het archief gehaald
+Product not unarchived: Product niet uit het archief gehaald
+Succesfully deleted: Succesvol verwijderd
+Product not deleted: Product niet verwijderd
+
+#Product groep
+Product group not added: Product groep niet toegevoegd
+Product group not edited: Productgroep niet gewijzigd
+Product group not found: Productgroep niet gevonden
+Product group not archived: Productgroep niet gearchiveerd
+Product group not unarchived: Productgroep niet uit het archief gehaald
+Product group not deleted: Productgroep niet verwijderd
+Add product group: Voeg productgroep toe
+Edit product group: Wijzig productgroep
+Archived product groups: Gearchiveerde product groepen
+Unarchive product group: Haal product groep uit archief
+product group: Product groep
+No product group(s) found.: Geen productgroepen gevonden.
+Archive product group: Gearchiveerde product groep
+
+# Rollen
+Role not added: Rol niet toegevoegd
+Role not edited: Rol niet gewijzigd
+Role not found: Rol niet gevonden
+Role not archived: Rol niet gearchiveerd
+Role not unarchived: Rol niet uit het archief gehaald
+Role not deleted: Rol niet verwijderd
+Archived roles: Gearchiveerde rollen
+Roles: Rollen
+Rolename: Rolnaam
+Unarchive role: Haal rol uit het archief
+role: Rol
+No roles found.: Geen rollen gevonden
+Add role: Voeg rol toe
+Edit role: Wijzig rol
+Archive role: Archiveerd Rol
+
+#Unit
+Unit not added: Eenheid niet toegevoegd
+Unit not edited: Eenheid niet gewijzigd
+Unit not found: Eenheid niet gevonden
+Unit not archived: Eenheid niet gearchiveerd
+Unit not unarchived: Eenheid niet uit het archief gehaald
+Unit not deleted: Eenheid niet verwijderd
+Unit saved: Eenheid bewaard
+Unit not saved: Eenheid niet bewaard
+Archived units: Gearchiveerde eenheden
+Unarchive unit: Ongearchiveerde eenheden
+unit: eenheid
+No unit(s) found.: Geen eenheden gevonden
+Add unit: Voeg eenheid toe
+Edit units: Wijzig eenheid
+Archive unit: Archiveer eenheid
+No units(s) found.: Geen eenheden gevonden.
+
+#Gebruiker
+User not added: Gebruiker niet toegevoegd
+User not edited: Gebruiker niet gewijzigd
+User not found: Gebruiker niet gevonden
+User not archived: Gebruiker niet gearchiveerd
+User not unarchived: Gebruiker niet uit het archief gehaald
+User not deleted: Gebruiker niet verwijderd
+Add user: Voeg gebruiker toe
+Edit User: Wijig gebruiker
+Archived users: Gearchiveerde gebruikers
+Users: Gebruikers
+Unarchive user: Ongearchiveerde gebruikers
+user: gebruiker
+No users found.: Geen gebruikers gevonden.
+Edit user: Wijzig gebruiker
+Archive user: Archiveer gebruiker
+user.sign-up: Registreer
+user.yes-account: Al een account, log hier in
+User name: Gebruikersnaam
+Email: E-mail
+Repeat password: Herhaal wachtwoord
+You al already logged on, there fore you can't register: Je bent al ingelogd daarom kan je niet registreren
+If you don't have a acoount, register here: Als je geen account hebt, registeer hier
+Edit profile: Wijzig profiel
+Firstname: Voornaam
+Lastname: Achternaam
+
+#product
+Add product: Voeg product toe
+Edit product: Wijzig product
+Archived products: Gearchiveerde producten
+Products: Producten
+Name: Naam
+Unarchive product: Ongearchiveerde produten
+product: product
+No products found.: Geen producten gevonden.
+Archive product: Gearchiveerd product
+
+
+#menu
+Menu: Menu
+User: Gebruiker
+Product groups: Product groepen
+Units: Eenheden
+Profile: Profiel
+Log out: Uitloggen
+
+
+#Algemeen
+Delete: Verwijder
+Are you sure you want to delete: Weet je zeker dat je het wilt verwijderen
+Delete product: Verwijder product
+Something went wrong: Iets ging mis
+Not an ajax call: Geen ajax aanroep
+captcha.wrong: Captcha verkeerd
+
+#paginering
+label_previous: Vorige
+label_next: Volgende

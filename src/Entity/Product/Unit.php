@@ -37,10 +37,10 @@ class Unit
      * One unit has many products. This is the inverse side.
      * @ORM\OneToMany(targetEntity="Product", mappedBy="unit")
      */
-    private $units;
+    private $products;
 
     public function __construct() {
-        $this->units = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     /**
@@ -118,19 +118,21 @@ class Unit
     /**
      * @return mixed
      */
-    public function getUnits()
+    public function getProducts()
     {
-        return $this->units;
+        return $this->products;
     }
 
     /**
-     * @param mixed $units
+     * @param mixed $products
      * @return Unit
      */
-    public function setUnits($units)
+    public function setProducts($products)
     {
-        $this->units = $units;
+        $this->products = $products;
         return $this;
     }
+
+
 
 }

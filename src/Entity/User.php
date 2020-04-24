@@ -6,10 +6,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Rollerworks\Component\PasswordStrength\Validator\Constraints as RollerworksPassword;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Entity\UserProfile;
+use Doctrine\Common\Annotations\Annotation;
 
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(fields={"email", "userName"}, message="user.exists")
  */
 class User implements UserInterface
 {
@@ -21,32 +26,12 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
-    private $displayName;
-
-    /**
      * @ORM\Column(name="user_name", type="string", length=180, unique=true)
      */
     private $userName;
 
     /**
-     * @ORM\Column(name="first_name", type="string", length=180)
-     */
-    private $firstName;
-
-    /**
-     * @ORM\Column(name="last_name", type="string", length=180)
-     */
-    private $lastName;
-
-    /**
-     * @ORM\Column(name="last_name_prefix", type="string", length=180, nullable=true)
-     */
-    private $lastNamePrefix;
-
-    /**
-     * @ORM\Column(name="email", type="string", length=180)
+     * @ORM\Column(name="email", type="string", length=180, unique=true)
      */
     private $email;
 
@@ -59,60 +44,63 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isActive;
+
+    /**
      * @ORM\Column(type="boolean", nullable=false, )
      */
     private $archived = false;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $token;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    private $updatedAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $activatedAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastLogin;
+
+    /**
+     * One User has One UserProfile.
+     * @ORM\OneToOne(targetEntity="UserProfile", mappedBy="user")
+     */
+    private $userProfile;
+
 
     /**
      * Many Users have Many Roles.
      * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
      * @ORM\JoinTable(name="users_roles")
      */
-    private $roles;
+    private $authRoles;
 
     public function __construct() {
-        $this->roles = new ArrayCollection();
+        $this->authRoles = new ArrayCollection();
     }
-
-
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getDisplayName(): ?string
-    {
-        return $this->displayName;
-    }
-
-    public function setDisplayName(string $displayName): self
-    {
-        $this->displayName = $displayName;
-
-        return $this;
-    }
-
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUserName(): string
-    {
-        return (string) $this->userName;
-    }
-
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function setUserName(string $userName): self
-    {
-        $this->userName = $userName;
-
-        return $this;
     }
 
     /**
@@ -120,23 +108,25 @@ class User implements UserInterface
      */
     public function getRoles(): array
     {
-        $userRoles = $this->roles;
-
+        $userRoles = $this->authRoles;
         $roles = [];
-
         foreach ($userRoles as $role) {
             $roles[] = $role->getRoleId();
         }
-
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
         return array_unique($roles);
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getRolesAndLoginPath()
+    {
+        return $this->authRoles;
     }
 
     public function setRoles(array $roles): self
     {
-        $this->roles = $roles;
+        $this->authRoles = $roles;
 
         return $this;
     }
@@ -149,7 +139,7 @@ class User implements UserInterface
         return (string) $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(?string $password): self
     {
         $this->password = $password;
 
@@ -171,54 +161,6 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFirstName()
-    {
-        return $this->firstName;
-    }
-
-    /**
-     * @param mixed $firstName
-     */
-    public function setFirstName($firstName)
-    {
-        $this->firstName = $firstName;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLastName()
-    {
-        return $this->lastName;
-    }
-
-    /**
-     * @param mixed $lastName
-     */
-    public function setLastName($lastName)
-    {
-        $this->lastName = $lastName;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLastNamePrefix()
-    {
-        return $this->lastNamePrefix;
-    }
-
-    /**
-     * @param mixed $lastNamePrefix
-     */
-    public function setLastNamePrefix($lastNamePrefix)
-    {
-        $this->lastNamePrefix = $lastNamePrefix;
     }
 
     /**
@@ -255,7 +197,166 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
 
+    /**
+     * @param mixed $token
+     * @return User
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param mixed $createdAt
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param mixed $updatedAt
+     * @return User
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getActivatedAt()
+    {
+        return $this->activatedAt;
+    }
+
+    /**
+     * @param mixed $activatedAt
+     * @return User
+     */
+    public function setActivatedAt($activatedAt)
+    {
+        $this->activatedAt = $activatedAt;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserName()
+    {
+        return $this->userName;
+    }
+
+    /**
+     * @param mixed $userName
+     * @return User
+     */
+    public function setUserName($userName)
+    {
+        $this->userName = $userName;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param mixed $isActive
+     * @return User
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastLogin()
+    {
+        return $this->lastLogin;
+    }
+
+    /**
+     * @param mixed $lastLogin
+     * @return User
+     */
+    public function setLastLogin($lastLogin)
+    {
+        $this->lastLogin = $lastLogin;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserProfile()
+    {
+        return $this->userProfile;
+    }
+
+    /**
+     * @param mixed $userProfile
+     * @return User
+     */
+    public function setUserProfile($userProfile)
+    {
+        $this->userProfile = $userProfile;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAuthRoles()
+    {
+        return $this->authRoles;
+    }
+
+    /**
+     * @param mixed $authRoles
+     * @return User
+     */
+    public function setAuthRoles($authRoles)
+    {
+        $this->authRoles = $authRoles;
+        return $this;
+    }
 
 
 }

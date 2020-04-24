@@ -36,13 +36,8 @@
             </div>
         {% endfor %}
     {% endfor %}
-    {% if app.user %}
     <div class="row mt-3 mb-3">
-        <div class="col-md-2 mainContent">
-            {% include('menu.html.twig') %}
-        </div>
-        {%  endif %}
-        <div class="col mainContent">{% block content %}{% endblock %}</div>
+        <div class="col">{% block content %}{% endblock %}</div>
     </div>
 
 </main>

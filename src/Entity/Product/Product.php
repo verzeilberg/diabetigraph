@@ -2,7 +2,9 @@
 
 namespace App\Entity\Product;
 
+
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Product\Unit;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")

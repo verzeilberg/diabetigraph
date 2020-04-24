@@ -1,10 +1,10 @@
-{% extends '/layout.html.twig' %}
+{% extends '/admin/index.html.twig' %}
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('unit') }}
 {% endblock %}
 
-{% block content %}
+{% block admincontent %}
     <div class="row">
         <h1 class="col">{% trans %}Units{% endtrans %}</h1>
     </div>

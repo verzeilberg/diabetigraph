@@ -3,7 +3,7 @@
 #    controller: App\Controller\DefaultController::index
 #    methods:    GET|HEAD
 
-index:
+app_index:
   path:       /
   controller: App\Controller\IndexController::index
   methods:    GET|HEAD
@@ -25,61 +25,76 @@ app_admin:
 
 app_users:
   path: /admin/users
-  controller: App\Controller\User\UserController::index
+  controller: App\Controller\Admin\User\UserController::index
 
 app_archivedusers:
   path: /admin/archived-users
-  controller: App\Controller\User\UserController::archived
+  controller: App\Controller\Admin\User\UserController::archived
 
 app_adduser:
   path: /admin/user/add
-  controller: App\Controller\User\UserController::add
+  controller: App\Controller\Admin\User\UserController::add
 
 app_edituser:
   path: /admin/user/edit/{id}
-  controller: App\Controller\User\UserController::edit
+  controller: App\Controller\Admin\User\UserController::edit
 
 app_archiveuser:
   path: /admin/user/archive/{id}
-  controller: App\Controller\User\UserController::archive
+  controller: App\Controller\Admin\User\UserController::archive
 
 app_unarchiveuser:
   path: /admin/user/unarchive{id}
-  controller: App\Controller\User\UserController::unarchive
+  controller: App\Controller\Admin\User\UserController::unarchive
 
 app_deleteuser:
   path: /admin/user/delete/{id}
-  controller: App\Controller\User\UserController::delete
+  controller: App\Controller\Admin\User\UserController::delete
+
+app_registeruser:
+  path: /register
+  controller: App\Controller\Admin\User\UserController::register
+
+app_activateuser:
+  path: /activate/{token}
+  controller: App\Controller\Admin\User\UserController::activate
+
+app_userprofile:
+    path: /profile/
+    controller: App\Controller\User\UserController::profile
+
+app_edituserprofile:
+  path: /profile/edit/
+  controller: App\Controller\User\UserController::edit
 
 # Roles routes
-
 app_roles:
   path: /admin/roles
-  controller: App\Controller\Role\RoleController::index
+  controller: App\Controller\Admin\Role\RoleController::index
 
 app_archivedroles:
   path: /admin/archived-roles
-  controller: App\Controller\Role\RoleController::archived
+  controller: App\Controller\Admin\Role\RoleController::archived
 
 app_addrole:
   path: /admin/role/add
-  controller: App\Controller\Role\RoleController::add
+  controller: App\Controller\Admin\Role\RoleController::add
 
 app_editrole:
   path: /admin/role/edit/{id}
-  controller: App\Controller\Role\RoleController::edit
+  controller: App\Controller\Admin\Role\RoleController::edit
 
 app_archiverole:
   path: /admin/role/archive/{id}
-  controller: App\Controller\Role\RoleController::archive
+  controller: App\Controller\Admin\Role\RoleController::archive
 
 app_unarchiverole:
   path: /admin/role/unarchive{id}
-  controller: App\Controller\Role\RoleController::unarchive
+  controller: App\Controller\Admin\Role\RoleController::unarchive
 
 app_deleterole:
   path: /admin/role/delete/{id}
-  controller: App\Controller\Role\RoleController::delete
+  controller: App\Controller\Admin\Role\RoleController::delete
 
 # Product routes
 

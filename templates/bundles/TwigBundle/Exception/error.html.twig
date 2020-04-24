@@ -1,0 +1,14 @@
+{% extends '/layout.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <h1 class="col">{% trans %}Page not found{% endtrans %}</h1>
+    </div>
+    <div class="row">
+        <div class="col">
+            The requested page couldn't be located. Checkout for any URL
+            misspelling or <a href="{{ path('app_index') }}">return to the homepage</a>.
+        </div>
+    </div>
+{% endblock %}
+

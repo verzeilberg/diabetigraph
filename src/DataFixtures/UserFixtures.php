@@ -26,12 +26,12 @@ class UserFixtures extends Fixture
             'Gravity35#'
         ));
 
-        $user->setDisplayName('Sander');
         $user->setUserName('sander');
         $user->setFirstName('Sander');
         $user->setLastName('Sander');
         $user->setEmail('sander@verzeilberg.nl');
-
+        $user->setCreatedAt(new \DateTime());
+        $user->setUpdatedAt(new \DateTime());
 
         $manager->persist($user);
         $manager->flush();

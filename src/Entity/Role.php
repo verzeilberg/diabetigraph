@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Route;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RoleRepository")
@@ -34,9 +35,15 @@ class Role
 
     /**
      * Many Roles have Many Users.
-     * @ORM\ManyToMany(targetEntity="User", mappedBy="roles")
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="authRoles")
      */
     private $users;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Route")
+     * @ORM\JoinColumn(name="login_path_id", referencedColumnName="id")
+     */
+    private $loginPath;
 
     /**
      * @ORM\Column(type="boolean", nullable=false, )
@@ -144,6 +151,26 @@ class Role
         $this->archived = $archived;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getLoginPath()
+    {
+        return $this->loginPath;
+    }
+
+    /**
+     * @param mixed $loginPath
+     * @return Role
+     */
+    public function setLoginPath($loginPath)
+    {
+        $this->loginPath = $loginPath;
+        return $this;
+    }
+
+
 
 
 

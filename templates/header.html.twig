@@ -1,20 +1,38 @@
-<nav class="navbar navbar-expand-md navbar-light ligthbleu" id="menuHeader">
-    <a href="{{ path('index') }}">
-        <img src="/logo.png" class="" alt="Diabetigraph" width="100vh" height="100vh"/>
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
-            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarText">
-        <span class="navbar-text">
+<nav class="navbar navbar-expand-md navbar-light" id="menuHeader">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a href="{{ path('app_index') }}">
+                    <img src="/logo.png" class="" alt="Diabetigraph" width="100vh" height="100vh"/>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="nav navbar-nav ml-auto">
             {% if app.user %}
-                You are logged in as {{ app.user.username }}, <a class="btn btn-outline-dark"
-                                                                 href="{{ path('app_logout') }}">Logout</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ path('app_userprofile') }}">
+                            <i class="far fa-id-badge"></i>
+                            {% trans %}Profile{% endtrans %}
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ path('app_logout') }}">
+                            <i class="fas fa-power-off"></i>
+                            {% trans %}Log out{% endtrans %}
+                        </a>
+                    </div>
+                </li>
             {% else %}
-                <a class="btn btn-outline-dark" href="{{ path('app_login') }}">Login</a>
+                <li class="nav-item">
+                    <a class="btn btn-outline-dark" href="{{ path('app_login') }}">Login</a>
+                </li>
             {% endif %}
-        </span>
+        </ul>
     </div>
 </nav>
-
