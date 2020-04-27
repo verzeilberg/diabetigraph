@@ -2,9 +2,12 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Role;
+use App\Entity\Route;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use App\Entity\User;
 
 class UserFixtures extends Fixture
@@ -19,19 +22,33 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $user = new User();
 
+        $route = new Route();
+        $route->setRoute('app_admin');
+
+        $manager->persist($route);
+
+        $role = new Role();
+
+        $role->setRoleId('ROLE_ADMIN');
+        $role->setDescription('Role for admin business');
+        $role->setName('Admin role');
+        $role->setLoginPath( $route);
+
+        $manager->persist($role);
+
+        $user = new User();
         $user->setPassword($this->passwordEncoder->encodePassword(
             $user,
             'Gravity35#'
         ));
 
         $user->setUserName('sander');
-        $user->setFirstName('Sander');
-        $user->setLastName('Sander');
         $user->setEmail('sander@verzeilberg.nl');
         $user->setCreatedAt(new \DateTime());
         $user->setUpdatedAt(new \DateTime());
+        $user->setIsActive(true);
+        $user->setAuthRoles([$role]);
 
         $manager->persist($user);
         $manager->flush();
