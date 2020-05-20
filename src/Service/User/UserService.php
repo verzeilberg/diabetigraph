@@ -9,6 +9,7 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Constraints\Date;
+use Nzo\UrlEncryptorBundle\UrlEncryptor\UrlEncryptor;
 
 
 class UserService
@@ -21,6 +22,9 @@ class UserService
     /** @var UserPasswordEncoderInterface */
     private $passwordEncoder;
 
+    /** @var UrlEncryptor */
+    private $encryptor;
+
     /**
      * UserService constructor.
      * @param UserRepository $repository
@@ -28,11 +32,13 @@ class UserService
      */
     public function __construct(
         UserRepository $repository,
-        UserPasswordEncoderInterface $passwordEncoder
+        UserPasswordEncoderInterface $passwordEncoder,
+        UrlEncryptor $encryptor
     )
     {
         $this->repository = $repository;
         $this->passwordEncoder = $passwordEncoder;
+        $this->encryptor = $encryptor;
     }
 
     /**

@@ -13,9 +13,10 @@
 {% block body %}{% endblock %}
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
-
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
 
     <!-- Renders app.js & a webpack runtime.js file
+
         <script src="/build/runtime.js"></script>
         <script src="/build/app.js"></script> -->
 {% endblock %}

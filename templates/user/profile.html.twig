@@ -13,7 +13,7 @@
     </div>
     <div class="row">
         <div class="col">
-
+            <img src="{{ asset('uploads/images/' ~ user.userProfile.imageFilename) }}" class="img-fluid" />
         </div>
         <div class="col">
             <table class="table table-sm table-responsive-md table-borderless">
@@ -27,7 +27,7 @@
                 </tr>
                 <tr>
                     <th>{% trans %}Email{% endtrans %}:</th>
-                    <td>{{ nzoEncrypt(user.email) }}</td>
+                    <td>{{ user.email }}</td>
                 </tr>
             </table>
         </div>

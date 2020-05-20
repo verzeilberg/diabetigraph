@@ -1,0 +1,21 @@
+{% extends '/layout.html.twig' %}
+
+
+{% block content %}
+    <div class="row">
+        <h1 class="col">{{ user.userName }}</h1>
+        <div class="col text-right">
+        </div>
+    </div>
+    <div class="row">
+        <hr class="col"/>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <img src="{{ asset('uploads/images/' ~ user.userProfile.imageFilename) }}" class="img-fluid" />
+        </div>
+        <div class="col">
+            {{ form(form) }}
+        </div>
+    </div>
+{% endblock %}

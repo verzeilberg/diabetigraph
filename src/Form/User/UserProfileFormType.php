@@ -14,6 +14,9 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class UserProfileFormType extends AbstractType
 {
@@ -22,12 +25,44 @@ class UserProfileFormType extends AbstractType
     {
 
 
-
         $builder
             ->add('firstName')
             ->add('lastName')
             ->add('lastNamePrefix')
-            ->add('birthdate');
+            ->add('birthday', BirthdayType::class, [
+                'widget' => 'choice',
+                'placeholder' => [
+                    'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
+                ]
+            ])
+            ->add('imageFilename', FileType::class, [
+                'label' => 'Profile picture',
+
+                // unmapped means that this field is not associated to any entity property
+                'mapped' => false,
+
+                // make it optional so you don't have to re-upload the PDF file
+                // every time you edit the Product details
+                'required' => false,
+
+                // unmapped fields can't define their validation using annotations
+                // in the associated entity, so you can use the PHP constraint classes
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/gif',
+                            'image/pngcd',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid imsge file (jpg, jpeg, png, gif)',
+                    ])
+                ],
+            ])
+            ->add('save', SubmitType::class, [
+                'label' => 'Save',
+                'attr' => ['class' => 'btn-custom']
+            ]);
 
     }
 

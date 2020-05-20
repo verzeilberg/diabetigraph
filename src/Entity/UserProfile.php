@@ -38,10 +38,15 @@ class UserProfile
     private $lastNamePrefix;
 
     /**
-     * @ORM\Column(name="birthdate", type="date", nullable=true)
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name="birthday", type="date", nullable=true)
      */
-    private $birthdate;
+    private $birthday;
+
+    /**
+     * @ORM\Column(name="image_filename", type="string", nullable=true)
+     */
+    private $imageFilename;
+
 
     /**
      * One UserProfile has One User.
@@ -125,18 +130,18 @@ class UserProfile
     /**
      * @return mixed
      */
-    public function getBirthdate()
+    public function getBirthday()
     {
-        return $this->birthdate;
+        return $this->birthday;
     }
 
     /**
-     * @param mixed $birthdate
+     * @param mixed $birthday
      * @return UserProfile
      */
-    public function setBirthdate($birthdate)
+    public function setBirthday($birthday)
     {
-        $this->birthdate = $birthdate;
+        $this->birthday = $birthday;
         return $this;
     }
 
@@ -157,6 +162,23 @@ class UserProfile
         $this->user = $user;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getImageFilename()
+    {
+        return $this->imageFilename;
+    }
+
+    /**
+     * @param mixed $imageFilename
+     */
+    public function setImageFilename($imageFilename): void
+    {
+        $this->imageFilename = $imageFilename;
+    }
+
 
 
 }

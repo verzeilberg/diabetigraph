@@ -6,9 +6,10 @@
 parameters:
     locale: 'en'
     app.email_noreply: noreply@noreply.com
-    app.recaptcha_key: '%env(RECAPTCHA_KEY)%'
-    app.recaptcha_secret: '%env(RECAPTCHA_SECRET)%'
+    app.recaptcha_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
+    app.recaptcha_secret: '%env(GOOGLE_RECAPTCHA_SECRET)%'
     google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
+    images_directory: '%kernel.project_dir%/public/uploads/images'
 
 services:
     # default configuration for services in *this* file
@@ -42,3 +43,7 @@ services:
     App\EventListener\LoginListener:
         tags:
             - { name: 'kernel.event_listener', event: 'security.interactive_login' }
+
+    App\Service\FileUploader:
+        arguments:
+            $targetDirectory: '%images_directory%'

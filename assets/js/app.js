@@ -23,7 +23,7 @@ require('bootstrap');
 
 $(document).ready(function () {
 
-
+    bsCustomFileInput.init();
 
     $('.deleteItem').click(function () {
         let deleteType = $(this).data('type')
@@ -34,5 +34,4 @@ $(document).ready(function () {
         $('#deleteDescription').html(deleteDescription);
         $('#deleteModal').modal('toggle');
     });
-
 });

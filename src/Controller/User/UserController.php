@@ -4,6 +4,8 @@ namespace App\Controller\User;
 
 use App\Entity\Role;
 use App\Form\User\UserFormType;
+use App\Form\User\UserProfileFormType;
+use App\Service\FileUploader;
 use App\Service\Role\RoleService;
 use App\Service\Route\RouteService;
 use App\Service\User\UserProfileService;
@@ -28,6 +30,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class UserController extends AbstractController
 {
@@ -52,36 +55,41 @@ class UserController extends AbstractController
      */
     public function profile(UserInterface $user)
     {
-
         if(!is_object($user->getUserProfile())) {
             $userProfile = $this->service->newUserProfile();
+            $userProfile->setUser($user);
             $this->service->repository->save($userProfile);
             $user->setUserProfile($userProfile);
             $result = $this->userService->saveUser($user, false, false);
         }
-
-
         return $this->render('user/profile.html.twig', [
             'user' => $user
         ]);
     }
 
     /**
-     * Edit user
-     * @param $id
+     * @param UserInterface $user
      * @param Request $request
      * @param TranslatorInterface $translator
      * @param LoggerInterface $logger
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @param FileUploader $fileUploader
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function edit(UserInterface $user, Request $request, TranslatorInterface $translator, LoggerInterface $logger)
+    public function edit(UserInterface $user, Request $request, TranslatorInterface $translator, LoggerInterface $logger, FileUploader $fileUploader)
     {
-
-        $form = $this->createForm(UserProfileFormType::class, $user->getUserProfile());
+        $userProfile = $user->getUserProfile();
+        $form = $this->createForm(UserProfileFormType::class, $userProfile);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $imageFile */
+            $imageFile = $form['imageFilename']->getData();
+            if ($imageFile) {
+                $imageFileName = $fileUploader->upload($imageFile);
+                $userProfile->setImageFilename($imageFileName);
+            }
 
             $type = 'success';
             $message = $translator->trans('Succesfully edited');
@@ -102,8 +110,9 @@ class UserController extends AbstractController
             return $this->redirectToRoute('app_userprofile');
         }
 
-        return $this->render('user/edit-profile.html.twig', [
+        return $this->render('user/profile-edit.html.twig', [
             'form' => $form->createView(),
+            'user' => $user
         ]);
     }
 }
