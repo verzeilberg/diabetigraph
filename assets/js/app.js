@@ -5,11 +5,10 @@ import '../css/global.scss';
 //Font-awesome
 require('@fortawesome/fontawesome-free/css/all.min.css');
 require('@fortawesome/fontawesome-free/js/all.js');
+//Cropper css
+require('cropperjs/dist/cropper.min.css');
 //Default css
 require('../css/app.css');
-
-
-
 
 const $ = require('jquery');
 
@@ -22,6 +21,8 @@ require('bootstrap');
 
 
 $(document).ready(function () {
+
+
 
     bsCustomFileInput.init();
 

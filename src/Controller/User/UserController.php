@@ -13,6 +13,8 @@ use App\Form\User\RegistrationType;
 use App\Service\User\UserService;
 use Symfony\Component\Form\FormError;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -80,16 +82,12 @@ class UserController extends AbstractController
     public function edit(UserInterface $user, Request $request, TranslatorInterface $translator, LoggerInterface $logger, FileUploader $fileUploader)
     {
         $userProfile = $user->getUserProfile();
+
         $form = $this->createForm(UserProfileFormType::class, $userProfile);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile $imageFile */
-            $imageFile = $form['imageFilename']->getData();
-            if ($imageFile) {
-                $imageFileName = $fileUploader->upload($imageFile);
-                $userProfile->setImageFilename($imageFileName);
-            }
 
             $type = 'success';
             $message = $translator->trans('Succesfully edited');
@@ -115,4 +113,41 @@ class UserController extends AbstractController
             'user' => $user
         ]);
     }
+
+    /**
+     * @Route("/image", name="image", options={"expose"=true})
+     * @param Request $request
+     */
+    public function getImage(UserInterface $user, Request $request)
+    {
+
+        $userProfile = $user->getUserProfile();
+
+        //File
+        $file = $_FILES['file'];
+        $file = new UploadedFile($file['tmp_name'], $file['name'], $file['type']);
+        $fileName = $this->generateUniqueName() . '.' . $file->guessExtension();
+        $file->move(
+            $this->getTargetDir(),
+            $fileName
+        );
+
+        $userProfile->setAvater($fileName);
+        $result = $this->service->repository->save($userProfile);
+            return new JsonResponse([
+                'result' => $result
+            ]
+            );
+    }
+
+    private function generateUniqueName()
+    {
+        return md5(uniqid());
+    }
+
+    private function getTargetDir()
+    {
+        return $this->getParameter('images_directory');
+    }
+
 }

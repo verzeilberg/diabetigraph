@@ -67,6 +67,10 @@ app_edituserprofile:
   path: /profile/edit/
   controller: App\Controller\User\UserController::edit
 
+app_userimage:
+  path: profile/edit/image/
+  controller: App\Controller\User\UserController::image
+
 # Roles routes
 app_roles:
   path: /admin/roles

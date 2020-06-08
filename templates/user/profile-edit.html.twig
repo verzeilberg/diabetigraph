@@ -11,11 +11,26 @@
         <hr class="col"/>
     </div>
     <div class="row">
-        <div class="col-md-4">
-            <img src="{{ asset('uploads/images/' ~ user.userProfile.imageFilename) }}" class="img-fluid" />
+        <div class="col">
+            <img src="{{ asset('uploads/images/' ~ user.userProfile.avater) }}" alt=""/>
         </div>
         <div class="col">
-            {{ form(form) }}
+            {{ form_start(form, {'attr': {'id': 'user_profile_form'}}) }}
+            {{ form_row(form.firstName) }}
+            {{ form_row(form.lastName) }}
+            {{ form_row(form.lastNamePrefix) }}
+            {{ form_row(form.birthday) }}
+            {{ form_row(form.Image) }}
+            <div class="form-group">
+                <img width="400" alt="" id="avater"/>
+            </div>
+            {{ form_row(form.save) }}
+            {{ form_end(form) }}
         </div>
     </div>
 {% endblock %}
+
+ {% block javascripts %}
+     {{ parent() }}
+     {{ encore_entry_script_tags('crop') }}
+ {% endblock %}

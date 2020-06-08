@@ -42,11 +42,11 @@ class UserProfile
      */
     private $birthday;
 
-    /**
-     * @ORM\Column(name="image_filename", type="string", nullable=true)
-     */
-    private $imageFilename;
 
+    /**
+     * @ORM\Column(name="avater", type="string", length=255, nullable=true)
+     */
+    private $avater;
 
     /**
      * One UserProfile has One User.
@@ -160,23 +160,22 @@ class UserProfile
     public function setUser($user)
     {
         $this->user = $user;
-        return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getImageFilename()
+    public function getAvater()
     {
-        return $this->imageFilename;
+        return $this->avater;
     }
 
     /**
-     * @param mixed $imageFilename
+     * @param mixed $avater
      */
-    public function setImageFilename($imageFilename): void
+    public function setAvater($avater): void
     {
-        $this->imageFilename = $imageFilename;
+        $this->avater = $avater;
     }
 
 

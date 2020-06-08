@@ -35,8 +35,8 @@ class UserProfileFormType extends AbstractType
                     'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
                 ]
             ])
-            ->add('imageFilename', FileType::class, [
-                'label' => 'Profile picture',
+            ->add('Image', FileType::class, [
+                'label' => 'Avatar',
 
                 // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
@@ -52,10 +52,10 @@ class UserProfileFormType extends AbstractType
                         'maxSize' => '1024k',
                         'mimeTypes' => [
                             'image/jpeg',
+                            'image/png',
                             'image/gif',
-                            'image/pngcd',
                         ],
-                        'mimeTypesMessage' => 'Please upload a valid imsge file (jpg, jpeg, png, gif)',
+                        'mimeTypesMessage' => 'Please upload a valid png, gif or jpeg.',
                     ])
                 ],
             ])
