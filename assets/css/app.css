@@ -80,3 +80,13 @@ ul.sortable-title li span span .fa-cogs {
 a.btn-custom {
     color:#FFFFFF;
 }
+
+#image-placeholder {
+    position: relative;
+}
+
+#edit-avatar {
+    position: absolute;
+    bottom: 2px;
+    left: 2px;
+}

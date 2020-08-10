@@ -24,18 +24,21 @@ class UserProfileFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
+        if (!$options["useOnlyImageUpload"]) {
+            $builder
+                ->add('firstName')
+                ->add('lastName')
+                ->add('lastNamePrefix')
+                ->add('birthday', BirthdayType::class, [
+                    'widget' => 'choice',
+                    'placeholder' => [
+                        'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
+                    ]
+                ]);
+        }
+        if ($options["useImageUpload"] or $options["useOnlyImageUpload"]) {
 
-        $builder
-            ->add('firstName')
-            ->add('lastName')
-            ->add('lastNamePrefix')
-            ->add('birthday', BirthdayType::class, [
-                'widget' => 'choice',
-                'placeholder' => [
-                    'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
-                ]
-            ])
-            ->add('Image', FileType::class, [
+            $builder->add('Image', FileType::class, [
                 'label' => 'Avatar',
 
                 // unmapped means that this field is not associated to any entity property
@@ -58,11 +61,12 @@ class UserProfileFormType extends AbstractType
                         'mimeTypesMessage' => 'Please upload a valid png, gif or jpeg.',
                     ])
                 ],
-            ])
-            ->add('save', SubmitType::class, [
-                'label' => 'Save',
-                'attr' => ['class' => 'btn-custom']
             ]);
+        }
+        $builder->add('save', SubmitType::class, [
+            'label' => 'Save',
+            'attr' => ['class' => 'btn-custom']
+        ]);
 
     }
 
@@ -71,6 +75,8 @@ class UserProfileFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => UserProfile::class,
+            'useImageUpload' => true,
+            'useOnlyImageUpload' => false
         ]);
     }
 }

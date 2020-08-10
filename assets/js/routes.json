@@ -1,1 +1,40 @@
-{"base_url":"","routes":{"image":{"tokens":[["text","\/image"]],"defaults":[],"requirements":[],"hosttokens":[],"methods":["POST"],"schemes":[]}},"prefix":"","host":"localhost","port":"","scheme":"http","locale":[]}
+{
+  "base_url": "",
+  "routes": {
+    "image": {
+      "tokens": [
+        [
+          "text",
+          "\/image"
+        ]
+      ],
+      "defaults": [],
+      "requirements": [],
+      "hosttokens": [],
+      "methods": [
+        "POST"
+      ],
+      "schemes": []
+    },
+    "profile": {
+      "tokens": [
+        [
+          "text",
+          "\/profile"
+        ]
+      ],
+      "defaults": [],
+      "requirements": [],
+      "hosttokens": [],
+      "methods": [
+        "POST"
+      ],
+      "schemes": []
+    }
+  },
+  "prefix": "",
+  "host": "localhost",
+  "port": "",
+  "scheme": "http",
+  "locale": []
+}

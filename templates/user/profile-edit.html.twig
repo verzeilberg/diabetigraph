@@ -1,36 +1,30 @@
 {% extends '/layout.html.twig' %}
-
-
 {% block content %}
-    <div class="row">
-        <h1 class="col">{{ user.userName }}</h1>
-        <div class="col text-right">
-        </div>
-    </div>
-    <div class="row">
-        <hr class="col"/>
-    </div>
-    <div class="row">
-        <div class="col">
-            <img src="{{ asset('uploads/images/' ~ user.userProfile.avater) }}" alt=""/>
-        </div>
-        <div class="col">
-            {{ form_start(form, {'attr': {'id': 'user_profile_form'}}) }}
-            {{ form_row(form.firstName) }}
-            {{ form_row(form.lastName) }}
-            {{ form_row(form.lastNamePrefix) }}
-            {{ form_row(form.birthday) }}
-            {{ form_row(form.Image) }}
-            <div class="form-group">
-                <img width="400" alt="" id="avater"/>
+    <div class="container">
+        <div class="row">
+            <h1 class="col">{{ user.userName }}</h1>
+            <div class="col text-right">
             </div>
-            {{ form_row(form.save) }}
-            {{ form_end(form) }}
+        </div>
+        <div class="row">
+            <hr class="col"/>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div id="image-placeholder">
+                <img class="embed-responsive"  src="{{ asset('uploads/images/' ~ user.userProfile.avater) }}" alt=""/>
+                <a id="edit-avatar" href="{{ path('app_edituserimage') }}" title="{% trans %} Edit avater {% endtrans %}" class="btn btn-dark"><i class="far fa-edit"></i></a>
+                </div>
+            </div>
+            <div class="col">
+                {{ form_start(form) }}
+                {{ form_row(form.firstName) }}
+                {{ form_row(form.lastName) }}
+                {{ form_row(form.lastNamePrefix) }}
+                {{ form_row(form.birthday) }}
+                {{ form_row(form.save) }}
+                {{ form_end(form) }}
+            </div>
         </div>
     </div>
 {% endblock %}
-
- {% block javascripts %}
-     {{ parent() }}
-     {{ encore_entry_script_tags('crop') }}
- {% endblock %}

@@ -67,9 +67,9 @@ app_edituserprofile:
   path: /profile/edit/
   controller: App\Controller\User\UserController::edit
 
-app_userimage:
+app_edituserimage:
   path: profile/edit/image/
-  controller: App\Controller\User\UserController::image
+  controller: App\Controller\User\UserController::editImage
 
 # Roles routes
 app_roles:

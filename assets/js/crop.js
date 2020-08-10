@@ -7,49 +7,38 @@ Routing.setRoutingData(Routes);
 
 $(document).ready(function () {
     let cropper;
-
-
-    var preview = document.getElementById('avater');
+    var preview = document.getElementById('avatar');
     var file_input = document.getElementById('user_profile_form_Image');
+    cropper = new Cropper(preview,{
+        responsive: true,
+        maxHeight: 800,
+        maxWidth: 800
+    })
 
     $("#user_profile_form_Image").change(function () {
         let file = file_input.files[0];
         let reader = new FileReader();
-
         reader.addEventListener('load', function (event) {
-            preview.src = reader.result;
+            cropper.replace(reader.result);
         }, false)
-
         if (file) {
             reader.readAsDataURL(file)
         }
-
-
     });
-
-    preview.addEventListener('load', function (event) {
-        cropper = new Cropper(preview, {
-            aspectRatio: 1 / 1,
-            scalable: false,
-            cropBoxResizable: false,
-            viewMode: 3
-        })
-    })
 
     let form = document.getElementById('user_profile_form');
     form.addEventListener('submit', function (event) {
         event.preventDefault();
         cropper.getCroppedCanvas({
-            maxHeight: 400,
-            maxWidth: 400
+
         }).toBlob(function (blob) {
             sendBlob(blob);
         })
     })
 
     function sendBlob(blob) {
-
         let url = Routing.generate('image');
+        let redirectUrl = Routing.generate('profile');
         let data = new FormData(form);
         data.append('file', blob);
         axios({
@@ -59,13 +48,54 @@ $(document).ready(function () {
             headers: {'X-Requested-With': 'XmlHttpRequest'}
         })
             .then((response) => {
-
                 if (response.data.result.error == null) {
-                    form.submit();
+                    window.location.replace(redirectUrl);
                 }
             })
             .catch((error) => {
                 console.log(error);
             })
+
     }
+
+    /**
+     * Rotate image left
+     */
+    $("#imageRotateLeft").click(function () {
+        cropper.rotate(90);
+    });
+
+    /**
+     * Rotat image right
+     */
+    $("#imageRotateRight").click(function () {
+        cropper.rotate(-90);
+    });
+
+    /**
+     * Flip image horizontal
+     */
+    $("#imageFlipHorizontal").click(function () {
+        var scale = $(this).data('option');
+        if(scale == 1) {
+            $(this).data('option', '-1' )
+        } else {
+            $(this).data('option', '1' )
+        }
+        cropper.scaleX(scale);
+    });
+
+    /**
+     * Flip image vertically
+     */
+    $("#imageFlipVertical").click(function () {
+        var scale = $(this).data('option');
+        if(scale == 1) {
+            $(this).data('option', '-1' )
+        } else {
+            $(this).data('option', '1' )
+        }
+        cropper.scaleY(scale);
+    });
+
 });

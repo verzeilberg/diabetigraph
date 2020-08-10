@@ -11,6 +11,7 @@ use App\Service\Route\RouteService;
 use App\Service\User\UserProfileService;
 use App\Form\User\RegistrationType;
 use App\Service\User\UserService;
+use App\Verzeilberg\UploadImage\UploadImagesBundle;
 use Symfony\Component\Form\FormError;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -33,6 +34,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Verzeilberg\UploadImagesBundle\Service\Rotate;
 
 class UserController extends AbstractController
 {
@@ -57,6 +59,10 @@ class UserController extends AbstractController
      */
     public function profile(UserInterface $user)
     {
+        $iets = new Rotate();
+
+        $iets->Rotate();
+
         if(!is_object($user->getUserProfile())) {
             $userProfile = $this->service->newUserProfile();
             $userProfile->setUser($user);
@@ -83,14 +89,16 @@ class UserController extends AbstractController
     {
         $userProfile = $user->getUserProfile();
 
-        $form = $this->createForm(UserProfileFormType::class, $userProfile);
+        $form = $this->createForm(UserProfileFormType::class, $userProfile, [
+            'useImageUpload' => false
+        ]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $type = 'success';
-            $message = $translator->trans('Succesfully edited');
+            $message = $translator->trans('Successfully edited');
             $userProfile = $form->getData();
 
             $result = $this->service->repository->save($userProfile);
@@ -109,6 +117,33 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/profile-edit.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user
+        ]);
+    }
+
+    public function editImage(UserInterface $user, TranslatorInterface $translator, Request $request)
+    {
+
+        $type = 'success';
+        $message = $translator->trans('Image successfully edited');
+        $userProfile = $user->getUserProfile();
+
+        $form = $this->createForm(UserProfileFormType::class, $userProfile, [
+            'useOnlyImageUpload' => true
+        ]);
+
+        if ($form->isSubmitted()) {
+
+            $this->addFlash(
+                $type,
+                $message
+            );
+
+            return $this->redirectToRoute('app_userprofile');
+        }
+
+        return $this->render('user/profile-edit-image.html.twig', [
             'form' => $form->createView(),
             'user' => $user
         ]);

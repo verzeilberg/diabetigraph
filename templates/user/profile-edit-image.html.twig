@@ -1,0 +1,35 @@
+{% extends '/layout.html.twig' %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <h1 class="col">{{ user.userName }}</h1>
+            <div class="col text-right">
+            </div>
+        </div>
+        <div class="row">
+            <hr class="col"/>
+        </div>
+        <div class="row">
+            <div class="col">
+                {{ form_start(form, {'attr': {'id': 'user_profile_form'}}) }}
+                {{ form_row(form.Image) }}
+                <div class="form-group">
+                    <img  src="{{ asset('uploads/images/' ~ user.userProfile.avater) }}" alt="" id="avatar"/>
+                </div>
+                <div class="btn-group mb-2">
+                    <button type="button" id="imageRotateRight" class="btn btn-dark"><i class="fas fa-redo-alt"></i></button>
+                    <button type="button" id="imageRotateLeft" class="btn btn-dark"><i class="fas fa-undo-alt"></i></button>
+                    <button type="button" id="imageFlipHorizontal" class="btn btn-dark" data-option="-1"><i class="fas fa-arrows-alt-h"></i></button>
+                    <button type="button" id="imageFlipVertical" class="btn btn-dark" data-option="-1"><i class="fas fa-arrows-alt-v"></i></button>
+                </div>
+                {{ form_row(form.save) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+ {% block javascripts %}
+     {{ parent() }}
+     {{ encore_entry_script_tags('crop') }}
+ {% endblock %}

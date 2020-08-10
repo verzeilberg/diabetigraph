@@ -1,35 +1,37 @@
 {% extends '/layout.html.twig' %}
-
-
 {% block content %}
-    <div class="row">
-        <h1 class="col">{{ user.userName }}</h1>
-        <div class="col text-right">
-            <a href="{{ path('app_edituserprofile') }}" class="btn btn-sm btn-custom" title="{% trans %} Edit profile {% endtrans %}">{% trans %} Edit profile {% endtrans %} <i class="fas fa-user-edit"></i></a>
+    <div class="container">
+        <div class="row">
+            <h1 class="col">{{ user.userName }}</h1>
+            <div class="col text-right">
+                <a href="{{ path('app_edituserprofile') }}" class="btn btn-sm btn-custom"
+                   title="{% trans %} Edit profile {% endtrans %}">{% trans %} Edit profile {% endtrans %} <i
+                            class="fas fa-user-edit"></i></a>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <hr class="col"/>
-    </div>
-    <div class="row">
-        <div class="col">
-            <img src="{{ asset('uploads/images/' ~ user.userProfile.avater) }}" alt=""/>
+        <div class="row">
+            <hr class="col"/>
         </div>
-        <div class="col">
-            <table class="table table-sm table-responsive-md table-borderless">
-                <tr>
-                    <th>{% trans %}Firstname{% endtrans %}:</th>
-                    <td>{{ user.userProfile.firstName }}</td>
-                </tr>
-                <tr>
-                    <th>{% trans %}Lastname{% endtrans %}:</th>
-                    <td>{{ user.userProfile.lastName }}, {{ user.userProfile.lastNamePrefix }}</td>
-                </tr>
-                <tr>
-                    <th>{% trans %}Email{% endtrans %}:</th>
-                    <td>{{ user.email }}</td>
-                </tr>
-            </table>
+        <div class="row">
+            <div class="col">
+                <img class="embed-responsive" src="{{ asset('uploads/images/' ~ user.userProfile.avater) }}" alt=""/>
+            </div>
+            <div class="col">
+                <table class="table table-sm table-responsive-md table-borderless">
+                    <tr>
+                        <th>{% trans %}Firstname{% endtrans %}:</th>
+                        <td>{{ user.userProfile.firstName }}</td>
+                    </tr>
+                    <tr>
+                        <th>{% trans %}Lastname{% endtrans %}:</th>
+                        <td>{{ user.userProfile.lastName }}, {{ user.userProfile.lastNamePrefix }}</td>
+                    </tr>
+                    <tr>
+                        <th>{% trans %}Email{% endtrans %}:</th>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 {% endblock %}
