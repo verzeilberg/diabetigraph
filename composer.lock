@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5cc03b7997988b763d48d6b7d59c27ea",
+    "content-hash": "a0d314424ef2b2f4bf78735b20e2b2bd",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -7020,6 +7020,50 @@
             "time": "2020-02-11T15:33:47+00:00"
         },
         {
+            "name": "verzeilberg/upload-images",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/verzeilberg/upload-images.git",
+                "reference": "2267909555842ddff5dd05352863f5d684f3580a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/verzeilberg/upload-images/zipball/2267909555842ddff5dd05352863f5d684f3580a",
+                "reference": "2267909555842ddff5dd05352863f5d684f3580a",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2.5"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "verzeilberg\\UploadImagesBundle\\": "src"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "verzeilberg\\UploadImagesBundle\\Tests\\": "tests"
+                }
+            },
+            "license": [
+                "GPL-2.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "sander",
+                    "email": "sander@verzeilberg.nl"
+                }
+            ],
+            "description": "Bundle to upload, crop and or resize images",
+            "support": {
+                "source": "https://github.com/verzeilberg/upload-images/tree/master",
+                "issues": "https://github.com/verzeilberg/upload-images/issues"
+            },
+            "time": "2020-09-09T08:28:40+00:00"
+        },
+        {
             "name": "vich/uploader-bundle",
             "version": "1.13.2",
             "source": {
@@ -7965,7 +8009,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "verzeilberg/upload-images": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
@@ -7973,5 +8019,6 @@
         "ext-ctype": "*",
         "ext-iconv": "*"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }

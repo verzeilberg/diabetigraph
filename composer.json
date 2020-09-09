@@ -40,6 +40,7 @@
         "symfony/web-link": "5.0.*",
         "symfony/webpack-encore-bundle": "^1.7",
         "symfony/yaml": "5.0.*",
+        "verzeilberg/upload-images": "dev-master",
         "vich/uploader-bundle": "^1.13"
     },
     "require-dev": {
@@ -94,5 +95,12 @@
             "allow-contrib": true,
             "require": "5.0.*"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/verzeilberg/upload-images",
+            "minimum-stability": "dev"
+        }
+    ]
 }

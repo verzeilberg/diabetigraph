@@ -2,13 +2,10 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Rollerworks\Component\PasswordStrength\Validator\Constraints as RollerworksPassword;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
+use Symfony\Component\Validator\Constraints as Assert;
+use verzeilberg\UploadImagesBundle\Entity\Image;
+use verzeilberg\UploadImagesBundle\Mapping\Annotation as Verzeilberg;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserProfileRepository")
@@ -42,11 +39,14 @@ class UserProfile
      */
     private $birthday;
 
-
     /**
-     * @ORM\Column(name="avater", type="string", length=255, nullable=true)
+     * @Verzeilberg\UploadField(mapping="profile_image")
+     * @Assert\Type(type="verzeilberg\UploadImagesBundle\Entity\Image")
+     * @ORM\OneToOne(targetEntity="verzeilberg\UploadImagesBundle\Entity\Image", cascade={"persist"})
+     * @ORM\JoinColumn(name="image_id", referencedColumnName="id")
+     * @Assert\Valid
      */
-    private $avater;
+    protected $image;
 
     /**
      * One UserProfile has One User.
@@ -178,6 +178,20 @@ class UserProfile
         $this->avater = $avater;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
 
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image): void
+    {
+        $this->image = $image;
+    }
 
 }

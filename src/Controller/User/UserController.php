@@ -2,39 +2,25 @@
 
 namespace App\Controller\User;
 
-use App\Entity\Role;
-use App\Form\User\UserFormType;
 use App\Form\User\UserProfileFormType;
 use App\Service\FileUploader;
-use App\Service\Role\RoleService;
-use App\Service\Route\RouteService;
 use App\Service\User\UserProfileService;
-use App\Form\User\RegistrationType;
 use App\Service\User\UserService;
-use App\Verzeilberg\UploadImage\UploadImagesBundle;
-use Symfony\Component\Form\FormError;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Psr\Log\LoggerInterface;
-use Knp\Component\Pager\PaginatorInterface;
-use App\Service\Security\TokenGenerator;
-use App\Service\Security\Mailer;
-use App\Service\Security\CaptchaValidator;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Validator\Exception\ValidatorException;
-use App\Entity\User;
-use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
-use App\Security\LoginFormAuthenticator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\String\Slugger\SluggerInterface;
-use Verzeilberg\UploadImagesBundle\Service\Rotate;
+use verzeilberg\UploadImagesBundle\Entity\Image;
+use verzeilberg\UploadImagesBundle\Form\Image\Upload;
+use verzeilberg\UploadImagesBundle\Metadata\Reader\ImageAnnotationReader;
+use verzeilberg\UploadImagesBundle\Service\Rotate;
 
 class UserController extends AbstractController
 {
@@ -43,26 +29,33 @@ class UserController extends AbstractController
     private $service;
 
     private $userService;
+    /** @var  */
+    private $rotate;
+
+    private $reader;
 
 
     public function __construct(
         UserProfileService $service,
-        UserService $userService
+        UserService $userService,
+        Rotate $rotate,
+        ImageAnnotationReader $reader
     ) {
         $this->service = $service;
         $this->userService = $userService;
+        $this->rotate = $rotate;
+        $this->reader = $reader;
     }
 
     /**
      * @param UserInterface $user
+     * @param Rotate $rotate
      * @return Response
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function profile(UserInterface $user)
+    public function profile(UserInterface $user, Rotate $rotate)
     {
-        $iets = new Rotate();
-
-        $iets->Rotate();
-
         if(!is_object($user->getUserProfile())) {
             $userProfile = $this->service->newUserProfile();
             $userProfile->setUser($user);
@@ -82,17 +75,13 @@ class UserController extends AbstractController
      * @param LoggerInterface $logger
      * @param FileUploader $fileUploader
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function edit(UserInterface $user, Request $request, TranslatorInterface $translator, LoggerInterface $logger, FileUploader $fileUploader)
     {
         $userProfile = $user->getUserProfile();
-
-        $form = $this->createForm(UserProfileFormType::class, $userProfile, [
-            'useImageUpload' => false
-        ]);
-
+        $form = $this->createForm(UserProfileFormType::class, $userProfile);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

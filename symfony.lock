@@ -135,6 +135,12 @@
     "knplabs/knp-paginator-bundle": {
         "version": "v5.1.1"
     },
+    "laminas/laminas-code": {
+        "version": "3.4.1"
+    },
+    "laminas/laminas-eventmanager": {
+        "version": "3.2.1"
+    },
     "laminas/laminas-zendframework-bridge": {
         "version": "1.0.3"
     },
@@ -625,6 +631,9 @@
     },
     "twig/twig": {
         "version": "v3.0.3"
+    },
+    "verzeilberg/upload-images": {
+        "version": "dev-master"
     },
     "vich/uploader-bundle": {
         "version": "1.5",
