@@ -11,10 +11,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <div id="image-placeholder">
-                <img class="embed-responsive"  src="{{ asset('uploads/images/' ~ user.userProfile.avater) }}" alt=""/>
-                <a id="edit-avatar" href="{{ path('app_edituserimage') }}" title="{% trans %} Edit avater {% endtrans %}" class="btn btn-dark"><i class="far fa-edit"></i></a>
-                </div>
+
             </div>
             <div class="col">
                 {{ form_start(form) }}
@@ -22,12 +19,10 @@
                 {{ form_row(form.lastName) }}
                 {{ form_row(form.lastNamePrefix) }}
                 {{ form_row(form.birthday) }}
-
-                {{ form_row(form.image.image) }}
+                {{ form_row(form.image.imageFile) }}
                 {{ form_row(form.image.nameImage) }}
                 {{ form_row(form.image.alt) }}
                 {{ form_row(form.image.descriptionImage) }}
-
                 {{ form_row(form.save) }}
                 {{ form_end(form) }}
             </div>

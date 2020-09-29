@@ -85,13 +85,11 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $type = 'success';
             $message = $translator->trans('Successfully edited');
             $userProfile = $form->getData();
-
             $result = $this->service->repository->save($userProfile);
-            if ($result['error'] !== null) {
+            if (in_array('error', $result)) {
                 $logger->error('An error occurred: ' . $result['error'][0]);
 
                 $type = 'warning';

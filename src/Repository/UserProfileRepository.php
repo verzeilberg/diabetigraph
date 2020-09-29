@@ -36,7 +36,6 @@ class UserProfileRepository extends ServiceEntityRepository
         try {
             $this->getEntityManager()->persist($userProfile);
             $this->getEntityManager()->flush();
-            $result['error'] = null;
         } catch (Exception $e) {
             $result['error'][$e->getMessage()];
         }

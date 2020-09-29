@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use verzeilberg\UploadImagesBundle\Entity\Image;
 use verzeilberg\UploadImagesBundle\Mapping\Annotation as Verzeilberg;
 
 /**
@@ -193,5 +192,6 @@ class UserProfile
     {
         $this->image = $image;
     }
+
 
 }
