@@ -23,6 +23,8 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
 
+
+
         $route = new Route();
         $route->setRoute('app_admin');
 
