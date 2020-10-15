@@ -40,7 +40,6 @@
         "symfony/web-link": "5.0.*",
         "symfony/webpack-encore-bundle": "^1.7",
         "symfony/yaml": "5.0.*",
-        "verzeilberg/upload-images": "dev-master",
         "vich/uploader-bundle": "^1.13"
     },
     "require-dev": {

@@ -4,6 +4,9 @@ namespace App\DataFixtures;
 
 use App\Entity\Role;
 use App\Entity\Route;
+use App\Service\Role\RoleService;
+use App\Service\Route\RouteService;
+use App\Service\User\UserService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -14,32 +17,50 @@ class UserFixtures extends Fixture
 {
 
     private $passwordEncoder;
+    private $userService;
+    private $roleService;
+    private $routeService;
 
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(
+        UserPasswordEncoderInterface $passwordEncoder,
+        UserService $userService,
+        RoleService $roleService,
+        RouteService $routeService
+    )
     {
         $this->passwordEncoder = $passwordEncoder;
+        $this->userService = $userService;
+        $this->roleService = $roleService;
+        $this->routeService = $routeService;
     }
 
     public function load(ObjectManager $manager)
     {
+        $route = $this->routeService->repository->getRouteByName('app_admin');
 
 
 
-        $route = new Route();
-        $route->setRoute('app_admin');
+        if(empty($route))
+        {
+            $route = $this->routeService->newRoute();
+            $route->setRoute('app_admin');
+            $this->routeService->repository->save($route);
 
-        $manager->persist($route);
+        }
 
-        $role = new Role();
+
+
+        $role = $this->roleService->newRole();
 
         $role->setRoleId('ROLE_ADMIN');
         $role->setDescription('Role for admin business');
         $role->setName('Admin role');
         $role->setLoginPath( $route);
 
-        $manager->persist($role);
+        $this->roleService->repository->save($role);
 
-        $user = new User();
+
+        $user = $this->userService->newUser();
         $user->setPassword($this->passwordEncoder->encodePassword(
             $user,
             'Gravity35#'
@@ -52,7 +73,7 @@ class UserFixtures extends Fixture
         $user->setIsActive(true);
         $user->setAuthRoles([$role]);
 
-        $manager->persist($user);
-        $manager->flush();
+        $this->userService->repository->save($user);
+
     }
 }

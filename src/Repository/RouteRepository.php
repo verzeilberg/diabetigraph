@@ -87,6 +87,16 @@ class RouteRepository extends ServiceEntityRepository
         return $this->findOneBy(['id' => $id]);
     }
 
+    /**
+     * Get route by name
+     * @param $name
+     * @return Route|null
+     */
+    public function getRouteByName($name)
+    {
+        return $this->findOneBy(['route' => $name]);
+    }
+
     public function searchRoutes($search)
     {
         $qb = $this->createQueryBuilder('r');

@@ -295,9 +295,9 @@ class UserController extends AbstractController
      * @param Mailer $mailer
      * @param CaptchaValidator $captchaValidator
      * @param TranslatorInterface $translator
-     * @param UserInterface $user
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
+     * @param TokenStorageInterface $tokenStorage
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @throws \Throwable
      */
     public function register(
         Request $request,
@@ -313,7 +313,7 @@ class UserController extends AbstractController
         $user = $tokenStorage->getToken()->getUser();
         //If user is logged on redirect to index
         if (is_object($user)) {
-            $this->addFlash('warning', $translator->trans('You al already logged on, there fore you can\'t register'));
+            $this->addFlash('warning', $translator->trans('You al already logged on, there for you can\'t register'));
             return $this->redirect($this->generateUrl('app_index'));
         }
 
@@ -338,7 +338,6 @@ class UserController extends AbstractController
                 $user->setIsActive(false);
                 $user->setCreatedAt(new \DateTime());
                 $user->setUpdatedAt(new \DateTime());
-                $user->setRoles([$role]);
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
