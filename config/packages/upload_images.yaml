@@ -1,4 +1,4 @@
-upload_images:
+git statusupload_images:
   mappings:
     default:
       upload_folder: '/uploads/images/profile/'

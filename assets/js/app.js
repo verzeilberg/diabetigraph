@@ -22,6 +22,7 @@ $(document).ready(function () {
     bsCustomFileInput.init();
 
     $('.deleteItem').click(function () {
+        console.log('test');
         let deleteType = $(this).data('type')
         let deleteLink = $(this).data('link');
         let deleteDescription = $(this).data('description');

@@ -30,8 +30,12 @@
                         <td>{{ user.userProfile.lastName }}, {{ user.userProfile.lastNamePrefix }}</td>
                     </tr>
                     <tr>
-                        <th>{% trans %}Email{% endtrans %}:</th>
+                        <th>{% trans %}email{% endtrans %}:</th>
                         <td>{{ user.email }}</td>
+                    </tr>
+                    <tr>
+                        <th>{% trans %}Birthdate{% endtrans %}:</th>
+                        <td>{{ user.userProfile.birthday|date("Y-m-d") }} ({{ user.userProfile.birthday|age() }}) {% trans %}year{% endtrans %}</td>
                     </tr>
                 </table>
             </div>

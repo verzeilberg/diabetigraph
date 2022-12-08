@@ -12,11 +12,19 @@
         <div class="row">
             <div class="col image-placeholder">
                 {% if user.getUserProfile.getImage.nameImage is defined %}
-                    <a href="{{ path('app_deleteuserimage', {id: user.getUserProfile.getImage.getId}) }}" class="btn btn-danger delete-image-btn">
+                    <button
+                            data-type="{% trans %}image{% endtrans %}"
+                            data-link="{{ path('app_deleteuserimage', {id: user.getUserProfile.getImage.getId}) }}"
+                            data-description="{{ user.getUserProfile.getImage.getId|e }}"
+                            type="button"
+                            class="btn btn-sm btn-danger deleteItem delete-image-btn"
+                            data-toggle="modal"
+                            data-target="#deleteModal"
+                    >
                         <i class="fas fa-1x fa-trash-alt"></i>
-                    </a>
+                    </button>
                     {% set imageUrl = user.getUserProfile.getImage.getImageLocationByType('blogging2') %}
-                    <img src="{{ imageUrl }}" class="img-fluid" alt="test" />
+                    <img src="{{ imageUrl }}" class="img-fluid" alt="test"/>
                 {% endif %}
             </div>
             <div class="col">
@@ -36,4 +44,5 @@
             </div>
         </div>
     </div>
+    {% include 'partial/delete.modal.html.twig' %}
 {% endblock %}

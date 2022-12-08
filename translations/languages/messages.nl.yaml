@@ -95,13 +95,15 @@ Archive user: Archiveer gebruiker
 user.sign-up: Registreer
 user.yes-account: Al een account, log hier in
 User name: Gebruikersnaam
-Email: E-mail
+email: "E-mail"
+Birthdate: Verjaardag
 Repeat password: Herhaal wachtwoord
 You al already logged on, there fore you can't register: Je bent al ingelogd daarom kan je niet registreren
 If you don't have a acoount, register here: Als je geen account hebt, registeer hier
 Edit profile: Wijzig profiel
 Firstname: Voornaam
 Lastname: Achternaam
+year: jaar
 
 #product
 Add product: Voeg product toe
