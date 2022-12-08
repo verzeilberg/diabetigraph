@@ -11,6 +11,7 @@ use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Psr\Log\LoggerInterface;
@@ -20,28 +21,39 @@ use Symfony\Component\Routing\Annotation\Route;
 use verzeilberg\UploadImagesBundle\Entity\Image;
 use verzeilberg\UploadImagesBundle\Form\Image\Upload;
 use verzeilberg\UploadImagesBundle\Metadata\Reader\ImageAnnotationReader;
+use verzeilberg\UploadImagesBundle\Service\Image as ImageService;
 use verzeilberg\UploadImagesBundle\Service\Rotate;
 
 class UserController extends AbstractController
 {
 
     /** @var UserProfileService */
-    private $service;
-
-    private $userService;
-    /** @var  */
+    private UserProfileService $service;
+    /** @var ImageService  */
+    private ImageService $imageService;
+    /** @var UserService  */
+    private UserService $userService;
+    /** @var Rotate  */
     private $rotate;
-
+    /** @var ImageAnnotationReader  */
     private $reader;
 
-
+    /**
+     * @param UserProfileService $service
+     * @param ImageService $imageService
+     * @param UserService $userService
+     * @param Rotate $rotate
+     * @param ImageAnnotationReader $reader
+     */
     public function __construct(
-        UserProfileService $service,
-        UserService $userService,
-        Rotate $rotate,
-        ImageAnnotationReader $reader
+        UserProfileService      $service,
+        ImageService            $imageService,
+        UserService             $userService,
+        Rotate                  $rotate,
+        ImageAnnotationReader   $reader
     ) {
         $this->service = $service;
+        $this->imageService = $imageService;
         $this->userService = $userService;
         $this->rotate = $rotate;
         $this->reader = $reader;
@@ -54,7 +66,7 @@ class UserController extends AbstractController
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function profile(UserInterface $user, Rotate $rotate)
+    public function profile(UserInterface $user, Rotate $rotate): Response
     {
         if(!is_object($user->getUserProfile())) {
             $userProfile = $this->service->newUserProfile();
@@ -73,32 +85,34 @@ class UserController extends AbstractController
      * @param Request $request
      * @param TranslatorInterface $translator
      * @param LoggerInterface $logger
-     * @param FileUploader $fileUploader
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return Response
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function edit(UserInterface $user, Request $request, TranslatorInterface $translator, LoggerInterface $logger, FileUploader $fileUploader)
+    public function edit(UserInterface $user, Request $request, TranslatorInterface $translator, LoggerInterface $logger): Response
     {
         $userProfile = $user->getUserProfile();
         $form = $this->createForm(UserProfileFormType::class, $userProfile);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $type = 'success';
             $message = $translator->trans('Successfully edited');
             $userProfile = $form->getData();
             $result = $this->service->repository->save($userProfile);
-            if (in_array('error', $result)) {
+            if (count($result['error']) > 0) {
                 $logger->error('An error occurred: ' . $result['error'][0]);
-
                 $type = 'warning';
-                $message = $translator->trans('Profile not edited');
+                $message = $translator->trans('Profile not edited: ' . $result['error'][0]);
             }
             $this->addFlash(
                 $type,
                 $message
             );
+            # Check is there are errors and if there areimages in the session
+            if(count($result['error']) === 0 && $this->imageService->checkImageInSession())
+            {
+                return $this->redirectToRoute('app_cropimage', ['returnUrl' => 'app_userprofile']);
+            }
 
             return $this->redirectToRoute('app_userprofile');
         }
@@ -111,7 +125,6 @@ class UserController extends AbstractController
 
     public function editImage(UserInterface $user, TranslatorInterface $translator, Request $request)
     {
-
         $type = 'success';
         $message = $translator->trans('Image successfully edited');
         $userProfile = $user->getUserProfile();
@@ -121,12 +134,10 @@ class UserController extends AbstractController
         ]);
 
         if ($form->isSubmitted()) {
-
             $this->addFlash(
                 $type,
                 $message
             );
-
             return $this->redirectToRoute('app_userprofile');
         }
 
@@ -137,10 +148,29 @@ class UserController extends AbstractController
     }
 
     /**
+     * @param UserInterface $user
+     * @param $id
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @param LoggerInterface $logger
+     * @return RedirectResponse
+     */
+    public function deleteImage(UserInterface $user, $id, Request $request, TranslatorInterface $translator, LoggerInterface $logger): RedirectResponse
+    {
+        $userProfile = $user->getUserProfile();
+        $userProfile->setImage(null);
+        $this->userService->userProfileRepository->save($userProfile);
+        $image = $this->imageService->deleteImage($id);
+
+        return $this->redirectToRoute('app_edituserprofile');
+    }
+
+
+    /**
      * @Route("/image", name="image", options={"expose"=true})
      * @param Request $request
      */
-    public function getImage(UserInterface $user, Request $request)
+    public function getImage(UserInterface $user, Request $request): JsonResponse
     {
 
         $userProfile = $user->getUserProfile();
@@ -156,20 +186,9 @@ class UserController extends AbstractController
 
         $userProfile->setAvater($fileName);
         $result = $this->service->repository->save($userProfile);
-            return new JsonResponse([
+        return new JsonResponse([
                 'result' => $result
             ]
-            );
+        );
     }
-
-    private function generateUniqueName()
-    {
-        return md5(uniqid());
-    }
-
-    private function getTargetDir()
-    {
-        return $this->getParameter('images_directory');
-    }
-
 }

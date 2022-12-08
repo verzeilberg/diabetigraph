@@ -22,6 +22,17 @@ yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
 ###>
-.idea/php.xml
+# file: ~/.gitignore_global
+.DS_Store
+.idea/*
 ###<
 
+public/uploads/
+
+.env
+
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###

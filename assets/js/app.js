@@ -5,8 +5,6 @@ import '../css/global.scss';
 //Font-awesome
 require('@fortawesome/fontawesome-free/css/all.min.css');
 require('@fortawesome/fontawesome-free/js/all.js');
-//Cropper css
-require('cropperjs/dist/cropper.min.css');
 //Default css
 require('../css/app.css');
 
@@ -21,9 +19,6 @@ require('bootstrap');
 
 
 $(document).ready(function () {
-
-
-
     bsCustomFileInput.init();
 
     $('.deleteItem').click(function () {
@@ -35,4 +30,25 @@ $(document).ready(function () {
         $('#deleteDescription').html(deleteDescription);
         $('#deleteModal').modal('toggle');
     });
+
+    $( ".ajax-call" ).on( "click", function() {
+       const href = $(this).data('href');
+       const data = $(this).attr('data');
+        $.ajax({
+            url: href,
+            type: 'POST',
+            data: {
+                'data': data
+            },
+            dataType: 'json',
+            async: true,
+            success: function (data) {
+
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert('Ajax request failed.');
+            }
+        });
+    });
+
 });

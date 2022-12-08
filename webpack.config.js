@@ -1,4 +1,5 @@
 var Encore = require('@symfony/webpack-encore');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -13,6 +14,7 @@ Encore
     .setPublicPath('/build')
     // only needed for CDN's or sub-directory deploy
     //.setManifestKeyPrefix('build/')
+    .setManifestKeyPrefix('verzeilberg/upload-images/')
 
     /*
      * ENTRY CONFIG
@@ -25,7 +27,6 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
     .addEntry('unit', './assets/js/unit.js')
-    .addEntry('crop', './assets/js/crop.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 
@@ -71,6 +72,13 @@ Encore
     // uncomment if you use API Platform Admin (composer req api-admin)
     //.enableReactPreset()
     //.addEntry('admin', './assets/js/admin.js')
+    .addPlugin(
+        new CopyWebpackPlugin({
+            patterns: [
+                {from: "./assets/img", to: "img"}
+            ]
+        })
+    )
 ;
 
 module.exports = Encore.getWebpackConfig();

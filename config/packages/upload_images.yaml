@@ -1,0 +1,39 @@
+upload_images:
+  mappings:
+    default:
+      upload_folder: '/uploads/images/profile/'
+      max_file_size: 5000000
+      allowed_file_types: ['image/jpeg', 'image/png']
+      image_types:
+          original:
+            folder: 'big'
+            type_crop: none
+          profile:
+            folder: 'prof'
+            type_crop: auto
+            ratio:
+              width: 700
+              height: 344
+          blogging:
+            folder: 'blogging'
+            type_crop: manual
+            ratio:
+              width: 700
+              height: 344
+          blogging2:
+            folder: 'blogging2'
+            type_crop: manual
+            ratio:
+              width: 700
+              height: 344
+    blog:
+      upload_folder: '/public/uploads/images/blog/'
+      max_file_size: 5000000
+      allowed_file_types: ['image/jpeg', 'image/png']
+      image_types:
+          original:
+            folder: '700x300'
+            type_crop: auto
+            ratio:
+              width: 700
+              height: 300

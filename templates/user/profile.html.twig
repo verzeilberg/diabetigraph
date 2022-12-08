@@ -13,8 +13,11 @@
             <hr class="col"/>
         </div>
         <div class="row">
-            <div class="col">
-
+            <div class="col image-placeholder">
+                {% if user.getUserProfile.getImage.nameImage is defined %}
+                    {% set imageUrl = user.getUserProfile.getImage.getImageLocationByType('blogging') %}
+                    <img src="{{ imageUrl }}" class="img-fluid" alt="test" />
+                {% endif %}
             </div>
             <div class="col">
                 <table class="table table-sm table-responsive-md table-borderless">

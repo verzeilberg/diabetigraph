@@ -4,6 +4,7 @@
 namespace App\Service\User;
 
 use App\Entity\User;
+use App\Repository\UserProfileRepository;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,14 +15,12 @@ use Nzo\UrlEncryptorBundle\UrlEncryptor\UrlEncryptor;
 
 class UserService
 {
-    /**
-     * @var UserRepository
-     */
+    /** @var UserRepository */
     public $repository;
-
+    /** @var UserProfileRepository */
+    public $userProfileRepository;
     /** @var UserPasswordEncoderInterface */
     private $passwordEncoder;
-
     /** @var UrlEncryptor */
     private $encryptor;
 
@@ -31,14 +30,16 @@ class UserService
      * @param UserPasswordEncoderInterface $passwordEncoder
      */
     public function __construct(
-        UserRepository $repository,
-        UserPasswordEncoderInterface $passwordEncoder,
-        UrlEncryptor $encryptor
+        UserRepository                  $repository,
+        UserProfileRepository           $userProfileRepository,
+        UserPasswordEncoderInterface    $passwordEncoder,
+        UrlEncryptor                    $encryptor
     )
     {
-        $this->repository = $repository;
-        $this->passwordEncoder = $passwordEncoder;
-        $this->encryptor = $encryptor;
+        $this->repository               = $repository;
+        $this->userProfileRepository    = $userProfileRepository;
+        $this->passwordEncoder          = $passwordEncoder;
+        $this->encryptor                = $encryptor;
     }
 
     /**

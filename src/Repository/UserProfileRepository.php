@@ -6,6 +6,7 @@ use App\Entity\UserProfile;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
+use Exception;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -37,7 +38,7 @@ class UserProfileRepository extends ServiceEntityRepository
             $this->getEntityManager()->persist($userProfile);
             $this->getEntityManager()->flush();
         } catch (Exception $e) {
-            $result['error'][$e->getMessage()];
+            $result['error'][] = $e->getMessage();
         }
         return $result;
     }

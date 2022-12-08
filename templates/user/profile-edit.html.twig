@@ -10,8 +10,14 @@
             <hr class="col"/>
         </div>
         <div class="row">
-            <div class="col">
-
+            <div class="col image-placeholder">
+                {% if user.getUserProfile.getImage.nameImage is defined %}
+                    <a href="{{ path('app_deleteuserimage', {id: user.getUserProfile.getImage.getId}) }}" class="btn btn-danger delete-image-btn">
+                        <i class="fas fa-1x fa-trash-alt"></i>
+                    </a>
+                    {% set imageUrl = user.getUserProfile.getImage.getImageLocationByType('blogging2') %}
+                    <img src="{{ imageUrl }}" class="img-fluid" alt="test" />
+                {% endif %}
             </div>
             <div class="col">
                 {{ form_start(form) }}
@@ -19,10 +25,12 @@
                 {{ form_row(form.lastName) }}
                 {{ form_row(form.lastNamePrefix) }}
                 {{ form_row(form.birthday) }}
-                {{ form_row(form.image.imageFile) }}
-                {{ form_row(form.image.nameImage) }}
-                {{ form_row(form.image.alt) }}
-                {{ form_row(form.image.descriptionImage) }}
+                {% if user.getUserProfile.getImage.nameImage is not defined %}
+                    {{ form_row(form.image.imageFile) }}
+                    {{ form_row(form.image.nameImage) }}
+                    {{ form_row(form.image.alt) }}
+                    {{ form_row(form.image.descriptionImage) }}
+                {% endif %}
                 {{ form_row(form.save) }}
                 {{ form_end(form) }}
             </div>

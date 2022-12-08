@@ -6,6 +6,8 @@ use App\Entity\UserProfile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use verzeilberg\UploadImagesBundle\Form\Image\Upload;
@@ -29,7 +31,16 @@ class UserProfileFormType extends AbstractType
                 ]);
         }
 
-        $builder->add('image', Upload::class);
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $userProfile = $event->getData();
+            $form = $event->getForm();
+            // checks if the Product object is "new"
+            // If no data is passed to the form, the data is "null".
+            // This should be considered a new "Product"
+            if (!$userProfile->getImage() || null === $userProfile->getImage()->getId()) {
+                $form->add('image', Upload::class);
+            }
+        });
 
         $builder->add('save', SubmitType::class, [
             'label' => 'Save',

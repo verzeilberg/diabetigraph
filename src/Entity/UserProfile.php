@@ -41,7 +41,7 @@ class UserProfile
     /**
      * @Verzeilberg\UploadField(mapping="profile_image")
      * @Assert\Type(type="verzeilberg\UploadImagesBundle\Entity\Image")
-     * @ORM\OneToOne(targetEntity="verzeilberg\UploadImagesBundle\Entity\Image", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="verzeilberg\UploadImagesBundle\Entity\Image", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="image_id", referencedColumnName="id")
      * @Assert\Valid
      */

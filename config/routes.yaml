@@ -71,6 +71,10 @@ app_edituserimage:
   path: profile/edit/image/
   controller: App\Controller\User\UserController::editImage
 
+app_deleteuserimage:
+  path: profile/delete/image/{id}
+  controller: App\Controller\User\UserController::deleteImage
+
 # Roles routes
 app_roles:
   path: /admin/roles
@@ -193,3 +197,8 @@ app_deleteunit:
 app_orederunit:
   path: /admin/unit/order
   controller: App\Controller\UnitController::order
+
+# Image routes
+app_crop:
+  # loads routes from the given routing file stored in some bundle
+  resource: '@UploadImagesBundle/Resources/config/routes.yaml'
