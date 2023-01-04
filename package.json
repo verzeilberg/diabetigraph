@@ -4,10 +4,10 @@
         "@symfony/webpack-encore": "^1.0.0",
         "bootstrap": "^4.4.1",
         "core-js": "^3.0.0",
-        "node-sass": "^6.0.0",
+        "node-sass": "^8.0.0",
         "regenerator-runtime": "^0.13.2",
         "sass": "^1.27.0",
-        "sass-loader": "^11.0.1",
+        "sass-loader": "^13.2.0",
         "webpack": "^5.36.2",
         "webpack-notifier": "^1.8.0"
     },
@@ -26,6 +26,7 @@
         "cropperjs": "^1.5.7",
         "jquery": "^3.5.0",
         "popper.js": "^1.16.1",
-        "sortablejs": "^1.10.2"
+        "sortablejs": "^1.10.2",
+        "tinymce": "^6.3.1"
     }
 }

@@ -37,6 +37,10 @@
                         <th>{% trans %}Birthdate{% endtrans %}:</th>
                         <td>{{ user.userProfile.birthday|date("Y-m-d") }} ({{ user.userProfile.birthday|age() }}) {% trans %}year{% endtrans %}</td>
                     </tr>
+                    <tr>
+                        <th>{% trans %}Bio{% endtrans %}:</th>
+                        <td>{{ user.userProfile.bio | raw}}</td>
+                    </tr>
                 </table>
             </div>
         </div>

@@ -39,6 +39,11 @@ class UserProfile
     private $birthday;
 
     /**
+     * @ORM\Column(name="bio", type="text", length=600, nullable=true)
+     */
+    private $bio;
+
+    /**
      * @Verzeilberg\UploadField(mapping="profile_image")
      * @Assert\Type(type="verzeilberg\UploadImagesBundle\Entity\Image")
      * @ORM\OneToOne(targetEntity="verzeilberg\UploadImagesBundle\Entity\Image", cascade={"persist", "remove"})
@@ -135,13 +140,29 @@ class UserProfile
     }
 
     /**
-     * @param mixed $birthday
-     * @return UserProfile
+     * @param $birthday
+     * @return $this
      */
-    public function setBirthday($birthday)
+    public function setBirthday($birthday): UserProfile
     {
         $this->birthday = $birthday;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBio()
+    {
+        return $this->bio;
+    }
+
+    /**
+     * @param mixed $bio
+     */
+    public function setBio($bio): void
+    {
+        $this->bio = $bio;
     }
 
     /**

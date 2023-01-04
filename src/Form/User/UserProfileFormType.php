@@ -5,6 +5,7 @@ namespace App\Form\User;
 use App\Entity\UserProfile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -28,6 +29,9 @@ class UserProfileFormType extends AbstractType
                     'placeholder' => [
                         'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
                     ]
+                ])
+                ->add('bio', TextareaType::class, [
+                    'attr' => ['class' => 'tinymce'],
                 ]);
         }
 
